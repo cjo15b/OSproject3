@@ -10,3 +10,24 @@ void OurExit(char *ptr){
 	free(ptr);
 	exit(0);
 }
+
+void info(){
+
+}
+
+char* ls(char* DIRNAME){
+
+
+	return DIRNAME;
+}
+
+char* cd(char* DIRNAME){
+
+	return DIRNAME;
+}
+
+char* size(char* FILENAME){
+
+	return FILENAME;
+}
+
