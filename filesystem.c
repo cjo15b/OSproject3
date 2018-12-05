@@ -34,18 +34,23 @@ typedef struct {
 	unsigned char BS_FilSysType[8];
 } BootBlock;
 
+void info(char * fileName){
+	FILE * fat32 = fopen(fileName, "rb+");
+	BootBlock * x;
+    fread(&x.BS_jmpBoot, 1, 3, fat32);
+    fread(&x.BS_OEMName, 1, 8, fat32);
+    fread(x.BPB_BytsPerSec, sizeof(x.BPB_BytsPerSec), 1, fat32);
+    fread(x.BPB_SecPerClus, sizeof(x.BPB_SecPerClus), 1, fat32);
+	printf("jmpBoot 1: %x, jmpBoot 2: %x, jmpBoot 3: %x\n", x.BS_jmpBoot[0], x.BS_jmpBoot[1], x.BS_jmpBoot[2]);
+}
+
+
 void OurExit(char *ptr){
 	printf("Hello world!\n");
 	free(ptr);
 	exit(0);
 }
 
-void info(char * fileName){
-	FILE * fat32 = fopen(fileName, "rb+");
-	BootBlock x;
-    fread(x.BS_jmpBoot, 1, 3, fat32);
-	printf("jmpBoot 1: %x, jmpBoot 2: %x, jmpBoot 3: %x\n", x.BS_jmpBoot[0], x.BS_jmpBoot[1], x.BS_jmpBoot[2]);
-}
 
 char* ls(char* DIRNAME){
 
@@ -58,7 +63,7 @@ char* cd(char* DIRNAME){
 	return DIRNAME;
 }
 
-char* size(char* FILENAME){
+char* size(char* FILENAME){	
 
 	return FILENAME;
 }
