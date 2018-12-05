@@ -45,6 +45,8 @@ void info(char * fileName){
 	BootBlock x;
     fread(x.BS_jmpBoot, 1, 3, fat32);
 	printf("jmpBoot 1: %x, jmpBoot 2: %x, jmpBoot 3: %x\n", x.BS_jmpBoot[0], x.BS_jmpBoot[1], x.BS_jmpBoot[2]);
+
+	return fileName;
 }
 
 char* ls(char* DIRNAME){

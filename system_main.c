@@ -25,18 +25,23 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 	printf("-> ");	
 	*/
 	
-	printf("Command-> ");	
 
+	while(1){
+		printf("Command-> ");	
 
+	
 	do{
 		scanf("%s", command);
 
 		if(strcmp(command, "exit") == 0)
 			OurExit(ptr);
+		if(strcmp(command, "info") == 0)
+			info("fat32.img");
+			
+
 	}while(getchar() != '\n');
+	}
 
-
-	info("fat32.img");
 
 
 
