@@ -46,7 +46,7 @@ void info(char * fileName){
 
 
 void OurExit(char *ptr){
-	printf("Hello world!\n");
+	printf("Exiting...\n");
 	free(ptr);
 	exit(0);
 }
@@ -67,4 +67,16 @@ char* size(char* FILENAME){
 
 	return FILENAME;
 }
+
+char* creat(char* FILENAME){
+
+	return FILENAME;
+}
+
+char* mkdir(char* DIRNAME){
+
+	return DIRNAME;
+}
+
+
 
