@@ -8,7 +8,8 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 	
 	char *ptr = NULL;
 
-	OurExit(ptr);
+	info("fat32.img");
+
 
 
 return 0;
