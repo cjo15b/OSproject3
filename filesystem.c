@@ -35,7 +35,7 @@ typedef struct {
 } BootBlock;
 
 void OurExit(char *ptr){
-	printf("Hello world!\n");
+	printf("Exiting...\n");
 	free(ptr);
 	exit(0);
 }
