@@ -65,3 +65,15 @@ char* size(char* FILENAME){
 	return FILENAME;
 }
 
+char* creat(char* FILENAME){
+
+	return FILENAME;
+}
+
+char* mkdir(char* DIRNAME){
+
+	return DIRNAME;
+}
+
+
+
