@@ -11,6 +11,7 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 	char command[256];
 	char cwd[256];
 	char hostname[1024];
+	int ls_flag = 0;
 
 	//IMPLEMENT AFTER FINISHING FOR CONVENIENCE
 	/*if (argc == 2){
@@ -39,24 +40,31 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 	
 
 	while(1){
+
+
 		printf("Command-> ");	
 
 	
 	do{
 		scanf("%s", command);
 
-		if(strcmp(command, "exit") == 0)
+		if(strcmp(command, "exit") == 0)				//exit
 			OurExit(ptr);
 		//To do: remove set fat32.img to argv[1]
-		if(strcmp(command, "info") == 0)
+		if(strcmp(command, "info") == 0)				//info
 			info("fat32.img");
-			
+		if(strcmp(command, "ls") == 0 || ls_flag == 1){			//ls - passes second parameter as DIRNAME to ls function
+		   if(ls_flag == 1){
+		      ls(command); 
+		      ls_flag = 0;
+		   }
+		   else
+		      ls_flag = 1;
+		}	
+
 
 	}while(getchar() != '\n');
 	}
-
-
-
 
 return 0;
 }

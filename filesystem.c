@@ -110,8 +110,7 @@ void OurExit(char *ptr){
 
 
 char* ls(char* DIRNAME){
-
-
+	
 	return DIRNAME;
 }
 
