@@ -36,8 +36,8 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 	printf("%s", cwd);			  
 	printf("-> ");	
 	*/
-	
-
+	//To do: remove set fat32.img to argv[1]
+	setBootBlock("fat32.img");
 	while(1){
 		printf("Command-> ");	
 
@@ -47,9 +47,9 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 
 		if(strcmp(command, "exit") == 0)
 			OurExit(ptr);
-		//To do: remove set fat32.img to argv[1]
+		
 		if(strcmp(command, "info") == 0)
-			info("fat32.img");
+			info();
 			
 
 	}while(getchar() != '\n');

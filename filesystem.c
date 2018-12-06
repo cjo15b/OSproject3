@@ -37,10 +37,10 @@ typedef struct {
 //Declaring globals
 BootBlock x;
 
-void info(char * fileName){
+void setBootBlock(char * fileName)
+{
 	FILE * fat32 = fopen(fileName, "rb+");
-	int i;
-	// Reading in all data from BootSector
+	// Reading in all data from Boot Sector
     fread(&x.BS_jmpBoot, 1, 3, fat32);
     fread(&x.BS_OEMName, 1, 8, fat32);
     fread(&x.BPB_BytsPerSec, sizeof(unsigned short), 1, fat32);
@@ -68,6 +68,10 @@ void info(char * fileName){
     fread(&x.BS_VolID, sizeof(unsigned int), 1, fat32);
     fread(x.BS_VolLab, 1, 11, fat32);
     fread(x.BS_FilSysType, 1, 8, fat32);
+}
+
+void info(){
+	int i;
 	printf("jmpBoot 1: 0x%x, jmpBoot 2: 0x%x, jmpBoot 3: 0x%x\n", x.BS_jmpBoot[0], x.BS_jmpBoot[1], x.BS_jmpBoot[2]);
 	printf("OEM Name: %s", x.BS_OEMName);
 	printf("\nBytes per sector: %d\n", x.BPB_BytsPerSec);
@@ -93,6 +97,7 @@ void info(char * fileName){
 	//Not important: printf("BS_Reserved1 %d\n", x.BS_Reserved1);
 	printf("Boot signature: 0x%x\n", x.BS_BootSig);
 	printf("Volume serial number: %u\n", x.BS_VolID);
+
 	printf("Volume Label: ");
 	for (i = 0; i < 11; i++)
 	{
