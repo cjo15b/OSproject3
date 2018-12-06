@@ -34,13 +34,15 @@ typedef struct {
 	unsigned char BS_FilSysType[8];
 } BootBlock;
 
+//Declaring globals
+BootBlock x;
+
 void info(char * fileName){
 	FILE * fat32 = fopen(fileName, "rb+");
-	BootBlock x;
 	int i;
 	// Reading in all data from BootSector
-    fread(x.BS_jmpBoot, 1, 3, fat32);
-    fread(x.BS_OEMName, 1, 8, fat32);
+    fread(&x.BS_jmpBoot, 1, 3, fat32);
+    fread(&x.BS_OEMName, 1, 8, fat32);
     fread(&x.BPB_BytsPerSec, sizeof(unsigned short), 1, fat32);
     fread(&x.BPB_SecPerClus, sizeof(unsigned char), 1, fat32);
     fread(&x.BPB_RsvdSecCnt, sizeof(unsigned short), 1, fat32);
@@ -64,14 +66,10 @@ void info(char * fileName){
     fread(&x.BS_Reserved1, sizeof(unsigned char), 1, fat32);
     fread(&x.BS_BootSig, sizeof(unsigned char), 1, fat32);
     fread(&x.BS_VolID, sizeof(unsigned int), 1, fat32);
-    fread(&x.BS_VolLab, 1, 11, fat32);
-    fread(&x.BS_FilSysType, 1, 8, fat32);
+    fread(x.BS_VolLab, 1, 11, fat32);
+    fread(x.BS_FilSysType, 1, 8, fat32);
 	printf("jmpBoot 1: 0x%x, jmpBoot 2: 0x%x, jmpBoot 3: 0x%x\n", x.BS_jmpBoot[0], x.BS_jmpBoot[1], x.BS_jmpBoot[2]);
-	printf("OEM Name: ");
-	for (i = 0; i < 8; i++)
-	{
-		printf("%c", x.BS_OEMName[i]);
-	}
+	printf("OEM Name: %s", x.BS_OEMName);
 	printf("\nBytes per sector: %d\n", x.BPB_BytsPerSec);
 	printf("Sectors per cluster: %d\n", x.BPB_SecPerClus);
 	printf("Number of reserved sectors: %d\n", x.BPB_RsvdSecCnt);
@@ -90,29 +88,17 @@ void info(char * fileName){
 	printf("Cluster number of root cluster: %d\n", x.BPB_RootClus);
 	printf("FSInfo sector number: %d\n", x.BPB_FSInfo);
 	printf("Sector number of boot record copy volume: %d\n", x.BPB_BkBootSec);
-	printf("BPB_Reserved: ");
-	for (i = 0; i < 12; i++)
-	{
-		printf("%c", x.BPB_Reserved[i]);
-	}
-	printf("\nDrive number: %x\n", x.BS_DrvNum);
-	printf("BS_Reserved1 %d\n", x.BS_Reserved1);
+	//Not important: printf("BPB_Reserved: %s", x.BPB_Reserved);
+	printf("Drive number: %x\n", x.BS_DrvNum);
+	//Not important: printf("BS_Reserved1 %d\n", x.BS_Reserved1);
 	printf("Boot signature: 0x%x\n", x.BS_BootSig);
 	printf("Volume serial number: %u\n", x.BS_VolID);
-	//Should have no label but doesnt print
 	printf("Volume Label: ");
 	for (i = 0; i < 11; i++)
 	{
 		printf("%c", x.BS_VolLab[i]);
 	}
-	printf("\nFile System Type: ");
-	for (i = 0; i < 8; i++)
-	{
-		printf("%c", x.BS_FilSysType[i]);
-	}
-
-
-
+	printf("\nFile System Type: %s\n", x.BS_FilSysType);
 }
 
 
