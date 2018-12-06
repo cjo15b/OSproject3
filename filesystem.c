@@ -22,7 +22,7 @@ typedef struct {
 	unsigned int BPB_FATSz32;
 	unsigned short BPB_ExtFlags;
 	unsigned short BPB_FSVer;
-	unsigned int BPB_RootClus;
+	unsigned int BPB_RootClus;		//Important: Root Cluser Number
 	unsigned short  BPB_FSInfo;
 	unsigned short BPB_BkBootSec;
 	unsigned char BPB_Reserved[12];
@@ -34,8 +34,27 @@ typedef struct {
 	unsigned char BS_FilSysType[8];
 } BootBlock;
 
+typedef struct
+{
+    char DIR_Name[11];
+
+    unsigned char DIR_Attr;
+    unsigned char DIR_NTRes;
+    unsigned char DIR_CrtTimeTenth;
+    unsigned short DIR_CrtTime;
+    unsigned short DIR_CrtDate;
+    unsigned short DIR_LstAccDate;
+    unsigned short DIR_FstClusHI;
+    unsigned short DIR_WrtTime;
+    unsigned short DIR_WrtDate;
+    unsigned short DIR_FstClusLO;
+    unsigned int DIR_FileSize;
+
+} Directory;
+
 //Declaring globals
 BootBlock x;
+
 
 void setBootBlock(char * fileName)
 {
@@ -89,7 +108,7 @@ void info(){
 	printf("Sectors occupied by one FAT: %d\n", x.BPB_FATSz32);
 	printf("BPB_ExtFlags: 0x%x\n", x.BPB_ExtFlags);
 	printf("Version number of volume: %d\n", x.BPB_FSVer);
-	printf("Cluster number of root cluster: %d\n", x.BPB_RootClus);
+	printf("Root cluster number %d\n", x.BPB_RootClus);
 	printf("FSInfo sector number: %d\n", x.BPB_FSInfo);
 	printf("Sector number of boot record copy volume: %d\n", x.BPB_BkBootSec);
 	//Not important: printf("BPB_Reserved: %s", x.BPB_Reserved);
