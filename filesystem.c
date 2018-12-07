@@ -54,6 +54,7 @@ typedef struct
 //Declaring globals
 BootBlock x;
 unsigned int cluster_number;
+char* parentString = "..         ";
 
 void setBootBlock(char * FILENAME)
 {
@@ -181,7 +182,6 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
             fread(&y, 32, 1, fat32);
             for (nm = 0; nm < 11; nm++)
             {
-               printf("%c == %c\n", y.DIR_Name[nm], DIRNAME[nm]);
             	if (y.DIR_Name[nm] != DIRNAME[nm])
             	{
             		break;
@@ -200,6 +200,21 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
 	return cluster_number;
 }
 
+void cd(char* FAT32, char* DIRNAME){
+   Directory y;
+   unsigned int cluster = cluster_number;
+   if(strcmp(DIRNAME, "/") == 0){
+      cluster = x.BPB_RootClus;
+   }else if(strcmp(DIRNAME, ".") == 0){
+      cluster = cluster_number;
+   }else if(strcmp(DIRNAME, "..") == 0){
+      cluster = findCluster(FAT32, parentString);
+   }else{
+      cluster = findCluster(FAT32, padDir(DIRNAME));
+   }
+   cluster_number = cluster;
+}
+
 char* ls(char * FAT32, char* DIRNAME){
 	Directory y;
    unsigned int cluster = cluster_number;
@@ -207,6 +222,8 @@ char* ls(char * FAT32, char* DIRNAME){
       cluster = x.BPB_RootClus;
    }else if(strcmp(DIRNAME, ".") == 0){
       cluster = cluster_number;
+   }else if(strcmp(DIRNAME, "..") == 0){
+      cluster = findCluster(FAT32, parentString);      
    }else{
       cluster = findCluster(FAT32, padDir(DIRNAME));
    }
@@ -217,7 +234,7 @@ char* ls(char * FAT32, char* DIRNAME){
 	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
 	unsigned int FirstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
 	//Ends up being same as FirstDataSector
-	unsigned int FirstSectorofCluster = ((cluster_number - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
+	unsigned int FirstSectorofCluster = ((x.BPB_RootClus - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
    
 	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
     {
@@ -252,10 +269,6 @@ char* ls(char * FAT32, char* DIRNAME){
 	printf("[0]: 0x%x\n", y.DIR_Name[0]);
 	printf("Attr: %x\n", y.DIR_Attr);
 	printf("DIRNAME: %s\n", y.DIR_Name);*/
-	return DIRNAME;
-}
-char* cd(char* DIRNAME){
-
 	return DIRNAME;
 }
 
