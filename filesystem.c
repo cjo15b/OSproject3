@@ -139,12 +139,12 @@ void OurExit(char *ptr){
 char* padDir(char* DIRNAME){
    int len = 11;
    char* token = strtok(DIRNAME, ".");
-   char* name;
-   char* extension;
-   name = token;
+   char* name = malloc(11 * sizeof(char*));
+   char* extension = malloc(3 * sizeof(char*));
+   strcpy(name, token);
    token = strtok(NULL, ".");
    if(token != NULL){
-      extension = token;
+      strcpy(extension, token);
       len = 8;
    }
    int i;
@@ -157,6 +157,7 @@ char* padDir(char* DIRNAME){
       }
       strcat(name, extension);
    }
+   free(extension);
    return name;
 }
 
@@ -226,15 +227,17 @@ void cd(char* FAT32, char* DIRNAME){
          cluster = x.BPB_RootClus;
      	 }
    }else{
-      cluster = findCluster(FAT32, padDir(DIRNAME));
+      char* tempDir = padDir(DIRNAME);
+      cluster = findCluster(FAT32, tempDir);
+      free(tempDir);
    }
    cluster_number = cluster;
 }
 
 char* ls(char * FAT32, char* DIRNAME){
 	Directory y;
-	unsigned int current = 0;
-   unsigned int cluster;
+   unsigned int current = 0;
+   unsigned int cluster = cluster_number;
    if(strcmp(DIRNAME, "/") == 0){
       cluster = x.BPB_RootClus;
    }else if(strcmp(DIRNAME, ".") == 0){
@@ -249,15 +252,18 @@ char* ls(char * FAT32, char* DIRNAME){
       	return "Error";
       }
    }else {
-   		unsigned int temp = findCluster(FAT32, padDir(DIRNAME));
+   		char* tempDir = padDir(DIRNAME);
+   		unsigned int temp = findCluster(FAT32, tempDir);
+   		free(tempDir);
    		if (temp == cluster_number)
    		{
+
    			return "Error";
    		}
    		else{
       		cluster = temp;
    		}
-   }
+      }           
 	FILE * fat32 = fopen(FAT32, "rb+");
 	int i = 1;
 	//Always 0 for FAT32
