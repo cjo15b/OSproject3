@@ -75,6 +75,10 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
          if(strcmp(command, "cd") == 0){
 	      	cd("fat32.img", arg); 
 			}
+			if(strcmp(command, "mkdir") == 0){
+	      	mkdir("fat32.img", arg); 
+			}
+
 
 		}while(getchar() != '\n');
 	}
