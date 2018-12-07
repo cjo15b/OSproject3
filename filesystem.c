@@ -204,12 +204,19 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
 char* ls(char * FAT32, char* DIRNAME){
 	Directory y;
 	unsigned int cluster = cluster_number;
+	unsigned int current = 0;
 	   if(strcmp(DIRNAME, "/") == 0){
 	      cluster = x.BPB_RootClus;
 	   }else{
 	      cluster = findCluster(FAT32, padDir(DIRNAME));
 	   }
-		unsigned int current = 0;
+   if(strcmp(DIRNAME, "/") == 0){
+      cluster = x.BPB_RootClus;
+   }else if(strcmp(DIRNAME, ".") == 0){
+      cluster = cluster_number;
+   }else{
+      cluster = findCluster(FAT32, padDir(DIRNAME));
+   }
 	FILE * fat32 = fopen(FAT32, "rb+");
 	int i = 1;
 	//Always 0 for FAT32
@@ -226,6 +233,7 @@ char* ls(char * FAT32, char* DIRNAME){
             fread(&y, 32, 1, fat32);
             if(y.DIR_Name[0] == (char) 0xE5)
             {
+            	printf("EQUALS 0xEF");
             	i += 2;
             	continue;
             }
