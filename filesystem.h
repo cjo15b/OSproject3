@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+void setBootBlock(char * FILENAME);
+void initClusterNum();
 void OurExit(char *ptr);
 void info();
 char* ls(char* FAT32, char* DIRNAME);

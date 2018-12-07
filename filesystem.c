@@ -177,7 +177,7 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
 
 char* ls(char * FAT32, char* DIRNAME){
 	Directory y;
-	unsigned int cluster = x.BPB_RootClus;
+	unsigned int cluster = findCluster(FAT32, DIRNAME);
 	unsigned int current = 0;
 	FILE * fat32 = fopen(FAT32, "rb+");
 	int i = 1;
