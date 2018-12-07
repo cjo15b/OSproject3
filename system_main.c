@@ -57,6 +57,8 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
          token = strtok(NULL, " \n");
          if(token != NULL){
             strcpy(arg, token);
+         }else{
+            strcpy(arg, ".");
          }
 
 			if(strcmp(command, "exit") == 0)				//exit
