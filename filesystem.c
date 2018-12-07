@@ -129,6 +129,57 @@ void info(){
 	printf("\nFile System Type: %s\n", x.BS_FilSysType);
 }
 
+void creat(char* FAT32, char* FILENAME){
+   FILE * fat32 = fopen(FAT32, "rb+");
+	Directory y;
+	unsigned int cluster = cluster_number;
+	unsigned int current = 0;
+	int nm, i = 1;
+	//Always 0 for FAT32
+	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
+	unsigned int FirstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
+	//Ends up being same as FirstDataSector
+	unsigned int FirstSectorofCluster = ((x.BPB_RootClus - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
+
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+    {
+        current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
+        i = 1;
+        while((i * 32) < x.BPB_BytsPerSec) {
+        	fseek(fat32, current + (i * 32), SEEK_SET);
+            fread(&y, 32, 1, fat32);
+            for (nm = 0; nm < 11; nm++)
+            {
+            	if (y.DIR_Name[nm] != DIRNAME[nm])
+            	{
+            		break;
+            	}
+            	else if (y.DIR_Name[nm] == DIRNAME[nm] && nm == 10)
+            	{
+            		fclose(fat32);
+            		printf("File HI: 0x%x\nFile Lo: 0x%x\n", y.DIR_FstClusHI, y.DIR_FstClusLO);
+            		printf("File first bit: 0x%x\n", y.DIR_Name[0]);
+            		printf("File attribute: 0x%x\n", y.DIR_Attr);
+            		printf("Sent Cluster %x\n", (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO));
+            		if (y.DIR_Attr == 0x10)
+                  {
+            			//return (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO);
+            		}
+            		else{
+                     printf("Error: File is not a Directory.\n");
+                     //return cluster_number;
+                  }
+            	}
+            }
+            i += 2;
+        }
+        fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+        fread(&cluster, sizeof(unsigned int), 1, fat32);
+    }
+    fclose(fat32);
+    printf("Error: File doesn't exist.\n");
+	//return cluster_number;
+}
 
 void OurExit(char *ptr){
 	printf("Exiting...\n");
@@ -195,7 +246,7 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
             		printf("File attribute: 0x%x\n", y.DIR_Attr);
             		printf("Sent Cluster %x\n", (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO));
             		if (y.DIR_Attr == 0x10)
-        			{
+                  {
             			return (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO);
             		}
             		else{
