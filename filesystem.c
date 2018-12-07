@@ -140,10 +140,10 @@ char* padDir(char* DIRNAME){
    char* token = strtok(DIRNAME, ".");
    char* name;
    char* extension;
-   strcpy(name, token);
+   name = token;
    token = strtok(NULL, ".");
    if(token != NULL){
-      strcpy(extension, token);
+      extension = token;
       len = 8;
    }
    int i;
@@ -203,16 +203,20 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
 
 char* ls(char * FAT32, char* DIRNAME){
 	Directory y;
-	unsigned int cluster = findCluster(FAT32, padDir(DIRNAME));
-	unsigned int current = 0;
+	unsigned int cluster = cluster_number;
+	   if(strcmp(DIRNAME, "/") == 0){
+	      cluster = x.BPB_RootClus;
+	   }else{
+	      cluster = findCluster(FAT32, padDir(DIRNAME));
+	   }
+		unsigned int current = 0;
 	FILE * fat32 = fopen(FAT32, "rb+");
 	int i = 1;
 	//Always 0 for FAT32
 	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
 	unsigned int FirstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
 	//Ends up being same as FirstDataSector
-	unsigned int FirstSectorofCluster = ((cluster - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
-
+	unsigned int FirstSectorofCluster = ((cluster_number - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
 	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
     {
         current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
