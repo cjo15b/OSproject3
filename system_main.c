@@ -65,7 +65,7 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 			if(strcmp(command, "info") == 0)
 				info();
 			if(strcmp(command, "ls") == 0){
-	      	ls("fat32.img", arg); 
+	      		ls("fat32.img", "fat32.img" ); 
 			}
 
 		}while(getchar() != '\n');

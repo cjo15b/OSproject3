@@ -1,7 +1,7 @@
-#include <time.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "filesystem.h"
 
 typedef struct {
@@ -215,11 +215,6 @@ char* ls(char * FAT32, char* DIRNAME){
         fread(&cluster, sizeof(unsigned int), 1, fat32);
     }
     fclose(fat32);
-	/*fseek(fat32, FirstSectorofCluster, SEEK_SET);
-	fread(&y, 1, 32, fat32);
-	printf("[0]: 0x%x\n", y.DIR_Name[0]);
-	printf("Attr: %x\n", y.DIR_Attr);
-	printf("DIRNAME: %s\n", y.DIR_Name);*/
 	return DIRNAME;
 }
 char* cd(char* DIRNAME){
