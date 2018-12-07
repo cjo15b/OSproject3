@@ -157,6 +157,7 @@ char* padDir(char* DIRNAME){
       }
       strcat(name, extension);
    }
+   free(extension);
    return name;
 }
 
@@ -218,7 +219,9 @@ void cd(char* FAT32, char* DIRNAME){
          cluster = x.BPB_RootClus;
      	 }
    }else{
-      cluster = findCluster(FAT32, padDir(DIRNAME));
+      char* tempDir = padDir(DIRNAME);
+      cluster = findCluster(FAT32, tempDir);
+      free(tempDir);
    }
    cluster_number = cluster;
 }
@@ -237,7 +240,9 @@ char* ls(char * FAT32, char* DIRNAME){
          cluster = x.BPB_RootClus;
       }           
    }else{
-      cluster = findCluster(FAT32, padDir(DIRNAME));
+      char* tempDir = padDir(DIRNAME);
+      cluster = findCluster(FAT32, tempDir);
+      free(tempDir);
    }
 	FILE * fat32 = fopen(FAT32, "rb+");
 	int i = 1;
