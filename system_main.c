@@ -1,16 +1,19 @@
 //system_main.c
 
-#include <stdio.h>
 #include "filesystem.h"
 #include <unistd.h>
+#include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 int main (int argc, const char* argv[]){		//this will be our main filesystem program.
 	FILE * fat32;
 	char *ptr = NULL;
+   char input[256];
 	char command[256];
 	char cwd[256];
 	char hostname[1024];
+   char arg[256];
 	int ls_flag = 0;
 
 	//IMPLEMENT AFTER FINISHING FOR CONVENIENCE
@@ -48,23 +51,21 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 
 	
 		do{
-			scanf("%s", command);
+			scanf("%256[^\n]", input);
+         char* token =  strtok(input, " \n");
+         strcpy(command, token);
+         token = strtok(NULL, " \n");
+         if(token != NULL){
+            strcpy(arg, token);
+         }
 
 			if(strcmp(command, "exit") == 0)				//exit
 				OurExit(ptr);
 			
 			if(strcmp(command, "info") == 0)
 				info();
-			if(strcmp(command, "ls") == 0 || ls_flag == 1){			//ls - passes second parameter as DIRNAME to ls function
-				if(ls_flag == 1){
-			      	ls("fat32.img", "RED"); 
-			      	ls_flag = 0;
-			   	}
-			   	else{
-			   		ls("fat32.img", "RED");
-			      	ls_flag = 1;
-			      }
-
+			if(strcmp(command, "ls") == 0){
+	      	ls("fat32.img", arg); 
 			}
 
 		}while(getchar() != '\n');
