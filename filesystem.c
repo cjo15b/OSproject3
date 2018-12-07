@@ -416,13 +416,14 @@ int nameExists(char * DIRNAME)
 
 
 
-void mkdir(char * FAT32, char* DIRNAME){
+void mkdir(char * FAT32, char* DIRNAME)
 {
 	FILE * fat32 = fopen(FAT32, "rb+");
 	Directory y;
 	Directory ourDir;
 
 	unsigned int cluster = cluster_number;
+	unsigned int setEnd = 0x0FFFFF8;
 	unsigned int current = 0;
 	unsigned int writeCluster;
 	int i = 1;
@@ -470,15 +471,15 @@ void mkdir(char * FAT32, char* DIRNAME){
 				ourDir.DIR_CrtDate = 0;
 				ourDir.DIR_LstAccDate = 0;
 				ourDir.DIR_FstClusHI = writeCluster / 0x100;
-				ourDir.DIR_WrtTime;
-				ourDir.DIR_WrtDate;
+				ourDir.DIR_WrtTime = 0;
+				ourDir.DIR_WrtDate = 0;
 				ourDir.DIR_FstClusLO = writeCluster%0x100;
 				ourDir.DIR_FileSize = 0;
 
 				//Moving to the space where we are going to write
             	fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (writeCluster * sizeof(int)), SEEK_SET);
             	//setting cluster to used
-                fwrite(0x0FFFFFF8, sizeof(int), 1, fat32);
+                fwrite(&setEnd, sizeof(int), 1, fat32);
 
                 //Setting our dir after seeking
 				fseek(fat32, current + (i * 32), SEEK_SET);
