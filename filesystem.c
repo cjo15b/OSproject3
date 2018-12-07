@@ -139,33 +139,25 @@ void OurExit(char *ptr){
 char* padDir(char* DIRNAME){
    int len = 11;
    char* token = strtok(DIRNAME, ".");
-   char* full;
-   char name[8];
-   char extension[3];
-   int i;
-   for(i = 0; i < strlen(token); i++){
-      name[i] = token[i];
-   }
-   //name = token;
+   char* name = malloc(11 * sizeof(char*));
+   char* extension = malloc(3 * sizeof(char*));
+   strcpy(name, token);
    token = strtok(NULL, ".");
    if(token != NULL){
-      //extension = token;
-      for(i = 0; i < strlen(token); i++){
-         extension[i] = token[i];
-      }
+      strcpy(extension, token);
       len = 8;
    }
+   int i;
    for(i = strlen(name); i < len; i++){
       strcat(name, " ");
    }
-   strcpy(full, name);
    if(len == 8){
       for(i = strlen(extension); i < 3; i++){
          strcat(extension, " ");
       }
-      strcat(full, extension);
+      strcat(name, extension);
    }
-   return full;
+   return name;
 }
 
 unsigned int findCluster(char *FAT32, char *DIRNAME)
