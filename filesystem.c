@@ -54,6 +54,7 @@ typedef struct
 //Declaring globals
 BootBlock x;
 unsigned int cluster_number;
+char* parentString = "..         ";
 
 void setBootBlock(char * FILENAME)
 {
@@ -181,7 +182,6 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
             fread(&y, 32, 1, fat32);
             for (nm = 0; nm < 11; nm++)
             {
-               printf("%c == %c\n", y.DIR_Name[nm], DIRNAME[nm]);
             	if (y.DIR_Name[nm] != DIRNAME[nm])
             	{
             		break;
@@ -205,17 +205,33 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
 	return cluster_number;
 }
 
+void cd(char* FAT32, char* DIRNAME){
+   Directory y;
+   unsigned int cluster = cluster_number;
+   if(strcmp(DIRNAME, "/") == 0){
+      cluster = x.BPB_RootClus;
+   }else if(strcmp(DIRNAME, ".") == 0){
+      cluster = cluster_number;
+   }else if(strcmp(DIRNAME, "..") == 0){
+      cluster = findCluster(FAT32, parentString);
+   }else{
+      cluster = findCluster(FAT32, padDir(DIRNAME));
+   }
+   cluster_number = cluster;
+}
+
 char* ls(char * FAT32, char* DIRNAME){
 	Directory y;
-	unsigned int cluster = cluster_number;
-	unsigned int current = 0;
-  	if(strcmp(DIRNAME, "/") == 0){
-  	    cluster = x.BPB_RootClus;
-  	}else if(strcmp(DIRNAME, ".") == 0){
-  	    cluster = cluster_number;
-  	}else{
-   	   cluster = findCluster(FAT32, padDir(DIRNAME));
-   	}
+   unsigned int cluster = cluster_number;
+   if(strcmp(DIRNAME, "/") == 0){
+      cluster = x.BPB_RootClus;
+   }else if(strcmp(DIRNAME, ".") == 0){
+      cluster = cluster_number;
+   }else if(strcmp(DIRNAME, "..") == 0){
+      cluster = findCluster(FAT32, parentString);      
+   }else{
+      cluster = findCluster(FAT32, padDir(DIRNAME));
+   }
 	FILE * fat32 = fopen(FAT32, "rb+");
 	int i = 1;
 	//Always 0 for FAT32
@@ -268,10 +284,6 @@ char* ls(char * FAT32, char* DIRNAME){
         fread(&cluster, sizeof(unsigned int), 1, fat32);
     }
     fclose(fat32);
-	return DIRNAME;
-}
-char* cd(char* DIRNAME){
-
 	return DIRNAME;
 }
 
