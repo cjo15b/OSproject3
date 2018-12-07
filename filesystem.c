@@ -135,6 +135,7 @@ void creat(char* FAT32, char* FILENAME){
 	unsigned int cluster = cluster_number;
 	unsigned int current = 0;
 	int nm, i = 1;
+   int exists = 0;
 	//Always 0 for FAT32
 	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
 	unsigned int FirstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
@@ -150,25 +151,13 @@ void creat(char* FAT32, char* FILENAME){
             fread(&y, 32, 1, fat32);
             for (nm = 0; nm < 11; nm++)
             {
-            	if (y.DIR_Name[nm] != DIRNAME[nm])
+            	if (y.DIR_Name[nm] != FILENAME[nm])
             	{
             		break;
             	}
-            	else if (y.DIR_Name[nm] == DIRNAME[nm] && nm == 10)
+            	else if (y.DIR_Name[nm] == FILENAME[nm] && nm == 10)
             	{
-            		fclose(fat32);
-            		printf("File HI: 0x%x\nFile Lo: 0x%x\n", y.DIR_FstClusHI, y.DIR_FstClusLO);
-            		printf("File first bit: 0x%x\n", y.DIR_Name[0]);
-            		printf("File attribute: 0x%x\n", y.DIR_Attr);
-            		printf("Sent Cluster %x\n", (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO));
-            		if (y.DIR_Attr == 0x10)
-                  {
-            			//return (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO);
-            		}
-            		else{
-                     printf("Error: File is not a Directory.\n");
-                     //return cluster_number;
-                  }
+                  exists = 1;
             	}
             }
             i += 2;
@@ -176,9 +165,10 @@ void creat(char* FAT32, char* FILENAME){
         fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
         fread(&cluster, sizeof(unsigned int), 1, fat32);
     }
+    if(exists == 0){
+       
+    }
     fclose(fat32);
-    printf("Error: File doesn't exist.\n");
-	//return cluster_number;
 }
 
 void OurExit(char *ptr){
@@ -417,11 +407,6 @@ void size(char * FAT32, char* DIRNAME){
     }
     fclose(fat32);
     printf("Error: File doesn't exist.\n");
-}
-
-char* creat(char* FILENAME){
-
-	return FILENAME;
 }
 
 char* mkdir(char* DIRNAME){
