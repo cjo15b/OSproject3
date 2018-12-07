@@ -376,6 +376,7 @@ void size(char * FAT32, char* DIRNAME){
 	unsigned int cluster = cluster_number;
 	unsigned int current = 0;
 	int nm, i = 1;
+	char* tempDir = padDir(DIRNAME);
 	//Always 0 for FAT32
 	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
 	unsigned int FirstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
@@ -391,15 +392,22 @@ void size(char * FAT32, char* DIRNAME){
             fread(&y, 32, 1, fat32);
             for (nm = 0; nm < 11; nm++)
             {
-            	if (y.DIR_Name[nm] != DIRNAME[nm])
+            	if (y.DIR_Name[nm] != tempDir[nm])
             	{
             		break;
             	}
-            	else if (y.DIR_Name[nm] == DIRNAME[nm] && nm == 10)
+            	else if (y.DIR_Name[nm] == tempDir[nm] && nm == 10)
             	{
             		fclose(fat32);
-            		printf("File Size: %d\n", y.DIR_FileSize);
-            		return;
+            		if (y.DIR_Attr != 0x10)
+        			{
+            			printf("File Size: %d\n", y.DIR_FileSize);
+			        	return;
+            		}
+            		else{
+			        	printf("Error: Not a file.\n");
+			        	return;
+        			}
             	}
             }
             i += 2;
