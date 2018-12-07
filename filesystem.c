@@ -139,25 +139,33 @@ void OurExit(char *ptr){
 char* padDir(char* DIRNAME){
    int len = 11;
    char* token = strtok(DIRNAME, ".");
-   char* name;
-   char* extension;
-   name = token;
+   char* full;
+   char name[8];
+   char extension[3];
+   int i;
+   for(i = 0; i < strlen(token); i++){
+      name[i] = token[i];
+   }
+   //name = token;
    token = strtok(NULL, ".");
    if(token != NULL){
-      extension = token;
+      //extension = token;
+      for(i = 0; i < strlen(token); i++){
+         extension[i] = token[i];
+      }
       len = 8;
    }
-   int i;
    for(i = strlen(name); i < len; i++){
       strcat(name, " ");
    }
+   strcpy(full, name);
    if(len == 8){
       for(i = strlen(extension); i < 3; i++){
          strcat(extension, " ");
       }
-      strcat(name, extension);
+      strcat(full, extension);
    }
-   return name;
+   return full;
 }
 
 unsigned int findCluster(char *FAT32, char *DIRNAME)
@@ -225,6 +233,7 @@ void cd(char* FAT32, char* DIRNAME){
 
 char* ls(char * FAT32, char* DIRNAME){
 	Directory y;
+   unsigned int current = 0;
    unsigned int cluster = cluster_number;
    if(strcmp(DIRNAME, "/") == 0){
       cluster = x.BPB_RootClus;
