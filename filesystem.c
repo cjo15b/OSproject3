@@ -135,6 +135,30 @@ void OurExit(char *ptr){
 	exit(0);
 }
 
+char* padDir(char* DIRNAME){
+   int len = 11;
+   char* token = strtok(DIRNAME, ".");
+   char* name;
+   char* extension;
+   strcpy(name, token);
+   token = strtok(NULL, ".");
+   if(token != NULL){
+      strcpy(extension, token);
+      len = 8;
+   }
+   int i;
+   for(i = strlen(name); i < len; i++){
+      strcat(name, " ");
+   }
+   if(len == 8){
+      for(i = strlen(extension); i < 3; i++){
+         strcat(extension, " ");
+      }
+      strcat(name, extension);
+   }
+   return name;
+}
+
 unsigned int findCluster(char *FAT32, char *DIRNAME)
 {
 	FILE * fat32 = fopen(FAT32, "rb+");
@@ -157,6 +181,7 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
             fread(&y, 32, 1, fat32);
             for (nm = 0; nm < 11; nm++)
             {
+               printf("%c == %c\n", y.DIR_Name[nm], DIRNAME[nm]);
             	if (y.DIR_Name[nm] != DIRNAME[nm])
             	{
             		break;
@@ -177,6 +202,7 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
 
 char* ls(char * FAT32, char* DIRNAME){
 	Directory y;
+   DIRNAME = padDir(DIRNAME);
 	unsigned int cluster = findCluster(FAT32, DIRNAME);
 	unsigned int current = 0;
 	FILE * fat32 = fopen(FAT32, "rb+");
