@@ -217,7 +217,7 @@ char* ls(char * FAT32, char* DIRNAME){
 	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
 	unsigned int FirstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
 	//Ends up being same as FirstDataSector
-	unsigned int FirstSectorofCluster = ((x.BPB_RootClus - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
+	unsigned int FirstSectorofCluster = ((cluster_number - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
    
 	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
     {
