@@ -214,6 +214,9 @@ void cd(char* FAT32, char* DIRNAME){
       cluster = cluster_number;
    }else if(strcmp(DIRNAME, "..") == 0){
       cluster = findCluster(FAT32, parentString);
+       if(cluster == 0){
+         cluster = x.BPB_RootClus;
+     	 }
    }else{
       cluster = findCluster(FAT32, padDir(DIRNAME));
    }
@@ -228,7 +231,10 @@ char* ls(char * FAT32, char* DIRNAME){
    }else if(strcmp(DIRNAME, ".") == 0){
       cluster = cluster_number;
    }else if(strcmp(DIRNAME, "..") == 0){
-      cluster = findCluster(FAT32, parentString);      
+      cluster = findCluster(FAT32, parentString);
+      if(cluster == 0){
+         cluster = x.BPB_RootClus;
+      }           
    }else{
       cluster = findCluster(FAT32, padDir(DIRNAME));
    }
