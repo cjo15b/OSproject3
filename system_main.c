@@ -38,36 +38,38 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 	printf("-> ");	
 	*/
 	//To do: remove set fat32.img to argv[1]
+	//Setting the boot block and current dir to root
 	setBootBlock("fat32.img");
+	initClusterNum();
 	while(1){
 
 
 		printf("Command-> ");	
 
 	
-	do{
-		scanf("%s", command);
+		do{
+			scanf("%s", command);
 
-		if(strcmp(command, "exit") == 0)				//exit
-			OurExit(ptr);
-		
-		if(strcmp(command, "info") == 0)
-			info();
-		//To do: remove set fat32.img to argv[1]
-		if(strcmp(command, "info") == 0)				//info
-			info("fat32.img");
-		if(strcmp(command, "ls") == 0 || ls_flag == 1){			//ls - passes second parameter as DIRNAME to ls function
-		   if(ls_flag == 1){
-		      ls(command); 
-		      ls_flag = 0;
-		   }
-		   else
-		      ls_flag = 1;
-		}
+			if(strcmp(command, "exit") == 0)				//exit
+				OurExit(ptr);
+			
+			if(strcmp(command, "info") == 0)
+				info();
+			if(strcmp(command, "ls") == 0 || ls_flag == 1){			//ls - passes second parameter as DIRNAME to ls function
+				if(ls_flag == 1){
+			      	ls("fat32.img", "RED"); 
+			      	ls_flag = 0;
+			   	}
+			   	else{
+			   		ls("fat32.img", "RED");
+			      	ls_flag = 1;
+			      }
 
-	}while(getchar() != '\n');
+			}
+
+		}while(getchar() != '\n');
 	}
 
-return 0;
+	return 0;
 }
 

@@ -37,7 +37,6 @@ typedef struct {
 typedef struct
 {
     char DIR_Name[11];
-
     unsigned char DIR_Attr;
     unsigned char DIR_NTRes;
     unsigned char DIR_CrtTimeTenth;
@@ -54,11 +53,11 @@ typedef struct
 
 //Declaring globals
 BootBlock x;
+unsigned int cluster_number;
 
-
-void setBootBlock(char * fileName)
+void setBootBlock(char * FILENAME)
 {
-	FILE * fat32 = fopen(fileName, "rb+");
+	FILE * fat32 = fopen(FILENAME, "rb+");
 	// Reading in all data from Boot Sector
     fread(&x.BS_jmpBoot, 1, 3, fat32);
     fread(&x.BS_OEMName, 1, 8, fat32);
@@ -87,6 +86,10 @@ void setBootBlock(char * fileName)
     fread(&x.BS_VolID, sizeof(unsigned int), 1, fat32);
     fread(x.BS_VolLab, 1, 11, fat32);
     fread(x.BS_FilSysType, 1, 8, fat32);
+    fclose(fat32);
+}
+void initClusterNum (){
+	cluster_number = x.BPB_RootClus;
 }
 
 void info(){
@@ -132,12 +135,93 @@ void OurExit(char *ptr){
 	exit(0);
 }
 
+unsigned int findCluster(char *FAT32, char *DIRNAME)
+{
+	FILE * fat32 = fopen(FAT32, "rb+");
+	Directory y;
+	unsigned int cluster = cluster_number;
+	unsigned int current = 0;
+	int nm, i = 1;
+	//Always 0 for FAT32
+	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
+	unsigned int FirstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
+	//Ends up being same as FirstDataSector
+	unsigned int FirstSectorofCluster = ((x.BPB_RootClus - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
 
-char* ls(char* DIRNAME){
-	
-	return DIRNAME;
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+    {
+        current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
+        i = 1;
+        while((i * 32) < x.BPB_BytsPerSec) {
+        	fseek(fat32, current + (i * 32), SEEK_SET);
+            fread(&y, 32, 1, fat32);
+            for (nm = 0; nm < 11; nm++)
+            {
+            	if (y.DIR_Name[nm] != DIRNAME[nm])
+            	{
+            		break;
+            	}
+            	else if (y.DIR_Name[nm] == DIRNAME[nm] && nm == 10)
+            	{
+            		return (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO);
+            	}
+            }
+            i += 2;
+        }
+        fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+        fread(&cluster, sizeof(unsigned int), 1, fat32);
+    }
+    fclose(fat32);
+	return cluster_number;
 }
 
+char* ls(char * FAT32, char* DIRNAME){
+	Directory y;
+	unsigned int cluster = x.BPB_RootClus;
+	unsigned int current = 0;
+	FILE * fat32 = fopen(FAT32, "rb+");
+	int i = 1;
+	//Always 0 for FAT32
+	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
+	unsigned int FirstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
+	//Ends up being same as FirstDataSector
+	unsigned int FirstSectorofCluster = ((x.BPB_RootClus - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
+
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+    {
+        current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
+        i = 1;
+        while((i * 32) < x.BPB_BytsPerSec) {
+        	fseek(fat32, current + (i * 32), SEEK_SET);
+            fread(&y, 32, 1, fat32);
+            if(y.DIR_Name[0] == (char) 0xE5)
+            {
+            	i += 2;
+            	continue;
+            }
+            //No entry after this one
+            else if(y.DIR_Name[0] == 0x00)
+                break;    
+            else
+            {	//If pos 8 isn't a space that means it has an extention
+        		//A dot is implied
+            	if(y.DIR_Name[8] != ' ')
+            		y.DIR_Name[7] = '.';
+                printf("%.*s\n", 11, y.DIR_Name);
+            }
+            i += 2;
+        }
+        fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+        fread(&cluster, sizeof(unsigned int), 1, fat32);
+    }
+    fclose(fat32);
+	/*fseek(fat32, FirstSectorofCluster, SEEK_SET);
+	fread(&y, 1, 32, fat32);
+	printf("[0]: 0x%x\n", y.DIR_Name[0]);
+	printf("Attr: %x\n", y.DIR_Attr);
+	printf("DIRNAME: %s\n", y.DIR_Name);*/
+	return DIRNAME;
+}
 char* cd(char* DIRNAME){
 
 	return DIRNAME;
