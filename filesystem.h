@@ -12,7 +12,7 @@ void OurExit(char *ptr);
 void info();
 char* ls(char* FAT32, char* DIRNAME);
 void cd(char* FAT32, char* DIRNAME);
-char* size(char* FILENAME);
+void size(char* FAT32, char* DIRNAME);
 char* creat(char* FILENAME);
 char* mkdir(char* DIRNAME);
 
