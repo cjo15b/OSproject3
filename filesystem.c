@@ -268,6 +268,10 @@ char* ls(char * FAT32, char* DIRNAME){
    		}
       }           
 	FILE * fat32 = fopen(FAT32, "rb+");
+  if (cluster == cluster_number)
+  {
+    printf(".\n");
+  }
 	int i = 1;
 	//Always 0 for FAT32
 	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
@@ -627,7 +631,7 @@ void mkdir(char* FAT32, char *dirname)
 
 void creat(char* FAT32, char* FILENAME)
 {
-   unsigned int clust_num = cluster_number;
+    unsigned int clust_num = cluster_number;
     int i = 1, j= 0;
     unsigned int currClust = 0, newCluster = 0;
     unsigned int parentClust = clust_num;
