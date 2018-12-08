@@ -626,10 +626,11 @@ void mkdir(char* FAT32, char *dirname)
 
 void creat(char* FAT32, char* FILENAME)
 {
+   unsigned int clust_num = cluster_number;
     int i = 1, j= 0;
     unsigned int currClust = 0, newCluster = 0;
-    unsigned int parentClust = cluster_number;
-    unsigned int lastClust = cluster_number;
+    unsigned int parentClust = clust_num;
+    unsigned int lastClust = clust_num;
 
     unsigned short holder, date;
 
@@ -648,9 +649,9 @@ void creat(char* FAT32, char* FILENAME)
     firstDataSector *= x.BPB_BytsPerSec;
 
 
-    while(cluster_number != 0x0FFFFFF8 && cluster_number != 0x0FFFFFFF)
+    while(clust_num != 0x0FFFFFF8 && clust_num != 0x0FFFFFFF)
     {
-        currClust = ((cluster_number - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+        currClust = ((clust_num - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
         i = 1;
         do{
             fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
@@ -707,11 +708,11 @@ void creat(char* FAT32, char* FILENAME)
         } while((i * sizeof(Directory)) < x.BPB_BytsPerSec);
 
 
-        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster_number * sizeof(int)), SEEK_SET);
-        fread(&cluster_number, sizeof(unsigned int), 1, fp);
+        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (clust_num * sizeof(int)), SEEK_SET);
+        fread(&clust_num, sizeof(unsigned int), 1, fp);
 
-        if(cluster_number != 0x0FFFFFF8 && cluster_number != 0x0FFFFFFF)
-            lastClust = cluster_number;
+        if(clust_num != 0x0FFFFFF8 && clust_num != 0x0FFFFFFF)
+            lastClust = clust_num;
     }
 
     fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (lastClust * sizeof(int)), SEEK_SET);
