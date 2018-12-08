@@ -1000,7 +1000,7 @@ void readMyFile(char *FAT32, char *FILENAME, char* OFFSET, char* SIZE)
                         return;
                     }
                         // else if we do find the file but it does not allow reading
-                    else if (opened[l].clust_num == fs.clust_num && (opened[l].mode != 0 && opened[l].mode != 2)) {
+                    else if (opened[l].clust_num == fs.clust_num && (opened[l].mode != 0 || opened[l].mode != 2)) {
                         printf("ERROR: The file is not open in read or read/write mode.\n");
                         free(output);
                         free(tempName);
