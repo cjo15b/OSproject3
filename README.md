@@ -1,10 +1,11 @@
 # OSproject3
 
--Jeremy -
-
--Jean -
-
+-Jeremy Dean-
+cd, padding names, open, close, creat, mkdir read, write.
+-Jean Bougeois-
+initial structure, ls, open, close, creat, mkdir, read, write.
 -Cody O'Connor - 
+initial structure,  ls, cd, creat, padding names, miscellaneous helper functions.
 
 
 
@@ -18,11 +19,11 @@ Tar file contents
 How to compile using the Makefile
 
 	$make
-	$./a.out
+	$./a.out <fat image>
 	$clean
 
 Known Bugs and unfinished portions of the project
-	-
+	-read and write segfault sometimes.
 
 Special considerations
 	-
