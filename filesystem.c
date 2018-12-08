@@ -135,6 +135,7 @@ void info(){
 void OurExit(char *ptr){
 	printf("Exiting...\n");
 	free(ptr);
+   free(opened);
 	exit(0);
 }
 
@@ -662,7 +663,9 @@ void creat(char* FAT32, char* FILENAME)
                 fwrite(&usedClust, sizeof(int), 1, fp);
 
                 memset(&newDir, 0, sizeof(Directory));
-                strcpy(newDir.DIR_Name, padDir(FILENAME));
+                char* padded = padDir(FILENAME);
+                strcpy(newDir.DIR_Name, padded);
+                free(padded);
                 newDir.DIR_FstClusHI = nextEmpty/0x100;
                 newDir.DIR_FstClusLO = nextEmpty%0x100;
                 newDir.DIR_WrtDate = tm.tm_mday;
@@ -960,7 +963,7 @@ void readMyFile(char *FAT32, char *FILENAME, char* OFFSET, char* SIZE)
             }
 
             // if we found the name and it isn't a directory
-            if(strcmp(tempName, FILENAME) == 0 && dir.DIR_Attr != 0x10)
+            if(strcmp(tempName, FILENAME) == 0 && dir.DIR_Attr != 0x10 && dir.DIR_FileSize != 0)
             {
                 trackClust = dir.DIR_FstClusHI * 0x100 + dir.DIR_FstClusLO;
                 fs.clust_num = trackClust;
@@ -1100,11 +1103,12 @@ void writeMyFile(char *FAT32, char *FILENAME, char* OFFSET, char* SIZE, char* ST
                     // if we find the file in the open file array, and if the mode allows writing
                     if (opened[i].clust_num == fs.clust_num && (opened[i].mode == 1 || opened[i].mode == 2)) {
                         // check that the offset doesn't exceed the file size
+                        /*
                         if(off > dir.DIR_FileSize)
                         {
                             printf("ERROR: The offset %d exceeds the file size %d\n",off,dir.DIR_FileSize);
                             return;
-                        }
+                        }*/
 
 
                         j = 0;
