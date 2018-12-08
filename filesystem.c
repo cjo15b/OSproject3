@@ -732,15 +732,9 @@ void creat(char* FAT32, char* FILENAME)
     currClust = ((nextEmpty - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
 
     memset(&newDir, 0, sizeof(Directory));
-    for(int j = 0; j < 11; ++j)
-    {
-        if(j >= strlen(FILENAME))
-        {
-            newDir.DIR_Name[j] = 0x20;
-        } else {
-            newDir.DIR_Name[j] = FILENAME[j];
-        }
-    }
+    char* padded = padDir(FILENAME);
+    strcpy(newDir.DIR_Name, padded);
+    free(padded);
 
     newDir.DIR_FstClusHI = tempEmpty/0x100;
     newDir.DIR_FstClusLO = tempEmpty%0x100;
