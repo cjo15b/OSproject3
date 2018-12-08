@@ -4,6 +4,8 @@
 #include <time.h>
 #include "filesystem.h"
 
+int statSize = 0;
+
 typedef struct {
 	unsigned char BS_jmpBoot[3];
 	unsigned char BS_OEMName[8];
@@ -55,6 +57,7 @@ typedef struct
 BootBlock x;
 unsigned int cluster_number;
 char* parentString = "..         ";
+
 
 void setBootBlock(char * FILENAME)
 {
@@ -663,5 +666,92 @@ void mkdir(char* FAT32, char *dirname)
     fclose(fp);
 }
 
+
+void open(char* FAT32,  char* FILENAME, char* mode)
+{
+    int i = 1, j;
+    unsigned int currClust = 0;
+    unsigned int trackClust = cluster_number;
+    Directory dir;
+    Status fs;
+    int * openSize = &statSize;
+    FILE *fp = fopen(FAT32, "rb+");
+
+    unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
+    firstDataSector *= x.BPB_BytsPerSec;
+
+    // check that the mode is valid
+
+    while(trackClust != 0x0FFFFFF8 && trackClust != 0x0FFFFFFF)
+    {
+        currClust = ((trackClust - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+        i = 1;
+        do{
+            fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
+            fread(&dir, sizeof(Directory), 1, fp);
+            char* tempName = (char*) malloc(12);
+            tempName[11] = '\0';
+            if(dir.DIR_Name[8] != ' ')
+               dir.DIR_Name[7] = '.';
+            int j = 0;
+            for(j; j < 11; ++j) {
+               if( dir.DIR_Name[j] == 0x20) {
+                  tempName[j] = '\0';
+                  break;
+               }
+               else
+                 tempName[j] = dir.DIR_Name[j];
+            }
+            // if we found the name and it isn't a directory
+            if(strncmp(tempName, FILENAME, 11) == 0 && dir.DIR_Attr != 0x10)
+            {
+                fs.clust_num = dir.DIR_FstClusHI * 0x100 + dir.DIR_FstClusLO;
+                // look through open file list to see if it is already open
+                for (int l = 0; l < (*openSize); ++l) {
+                    // if we find the file in the list
+                    if (opened[l].clust_num == fs.clust_num) {
+                        printf("ERROR: This file is already open.\n");
+                        return;
+                    }
+                }
+                // if read only and chosen mode is read
+                if((dir.DIR_Attr & 0x01) == 0x01 && (strcmp(mode, "r") == 0 || strcmp(mode, "R") == 0)) // read only
+                {
+                    fs.mode = 0;
+                }
+                    // else if not read only
+                else if((dir.DIR_Attr & 0x01) != 0x01)
+                {
+                    if(strcmp(mode, "r") == 0 || strcmp(mode, "R") == 0)
+                    {
+                        fs.mode = 0;
+                    } else if(strcmp(mode, "w") == 0 || strcmp(mode, "W") == 0){
+                        fs.mode = 1;
+                    } else if(strcmp(mode, "rw") == 0 || strcmp(mode, "wr") == 0
+                              || strcmp(mode, "RW") == 0 || strcmp(mode, "WR") == 0)
+                    {
+                        fs.mode = 2;
+                    } else {
+                        printf("ERROR: Invalid mode.\n");
+                        return;
+                    }
+                } else {
+                    // if we get here, then the user tried to open a read only file in a write mode
+                    printf("ERROR: Cannot open a read-only file in write mode.\n");
+                    return;
+                }
+                opened[(*openSize)++] = fs;
+                return;
+            }
+            i += 2;
+        } while((i * sizeof(Directory)) < x.BPB_BytsPerSec);
+
+
+        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
+        fread(&trackClust, sizeof(unsigned int), 1, fp);
+    }
+
+    fclose(fp);
+}
 
 

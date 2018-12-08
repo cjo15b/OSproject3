@@ -1,10 +1,10 @@
 //system_main.c
 
-#include "filesystem.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "filesystem.h"
 
 int main (int argc, const char* argv[]){		//this will be our main filesystem program.
 	FILE * fat32;
@@ -15,6 +15,9 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 	char hostname[1024];
    char arg[256];
 	int ls_flag = 0;
+   
+   
+   opened = (Status *) malloc(255 * sizeof(Status));
 
 	//IMPLEMENT AFTER FINISHING FOR CONVENIENCE
 	/*if (argc == 2){
@@ -78,11 +81,20 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
 			if(strcmp(command, "mkdir") == 0){
 	      	mkdir("fat32.img", arg); 
 			}
+         if(strcmp(command, "open") == 0){
+            token = strtok(NULL, " \n");
+            if(token != NULL){
+               open("fat32.img", arg, token);
+            }else{
+               printf("Need to specify a mode\n");
+            }
+         }
 
 
 		}while(getchar() != '\n');
 	}
 
+   free(opened);
 	return 0;
 }
 
