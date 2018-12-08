@@ -84,12 +84,32 @@ int main (int argc, const char* argv[]){		//this will be our main filesystem pro
          if(strcmp(command, "open") == 0){
             token = strtok(NULL, " \n");
             if(token != NULL){
-               open("fat32.img", arg, token);
+               openMyFile("fat32.img", arg, token);
             }else{
                printf("Need to specify a mode\n");
             }
          }
-
+         if(strcmp(command, "close") == 0){
+            closeMyFile("fat32.img", arg);
+         }
+         if(strcmp(command, "read") == 0){
+            char offset[256];
+            char size[256];
+            token = strtok(NULL, " \n");
+            if(token != NULL){
+               strcpy(offset, token);
+               token = strtok(NULL, " \n");
+               if(token != NULL){
+                  strcpy(size, token);
+                  readMyFile("fat32.img", arg, offset, size);
+               }else{
+                  printf("Not enough arguments\n");
+               }
+            }else{
+               printf("Not enough arguments\n");
+            }
+         }
+         
 
 		}while(getchar() != '\n');
 	}

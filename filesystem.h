@@ -22,6 +22,8 @@ void cd(char* FAT32, char* DIRNAME);
 void size(char* FAT32, char* DIRNAME);
 void mkdir(char * FAT32, char* DIRNAME);
 void creat(char* FAT32, char* FILENAME);
-void open(char* FAT32,  char* FILENAME, char* mode);
+void openMyFile(char* FAT32,  char* FILENAME, char* mode);
+void closeMyFile(char* FAT32, char* FILENAME);
+void readMyFile(char* FAT32, char* FILENAME, char* OFFSET, char* SIZE);
 
 
