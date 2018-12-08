@@ -8,7 +8,7 @@
 
 typedef struct
 {
-    unsigned int clust_num;
+    unsigned int cluster;
     unsigned short mode;
 } Status;
 Status *opened;

@@ -24,7 +24,7 @@ typedef struct {
 	unsigned int BPB_FATSz32;
 	unsigned short BPB_ExtFlags;
 	unsigned short BPB_FSVer;
-	unsigned int BPB_RootClus;		//Important: Root Cluser Number
+	unsigned int BPB_RootClus;		//Important: Root Cluster Number
 	unsigned short  BPB_FSInfo;
 	unsigned short BPB_BkBootSec;
 	unsigned char BPB_Reserved[12];
@@ -38,18 +38,18 @@ typedef struct {
 
 typedef struct
 {
-    char DIR_Name[11];
-    unsigned char DIR_Attr;
-    unsigned char DIR_NTRes;
-    unsigned char DIR_CrtTimeTenth;
-    unsigned short DIR_CrtTime;
-    unsigned short DIR_CrtDate;
-    unsigned short DIR_LstAccDate;
-    unsigned short DIR_FstClusHI;
-    unsigned short DIR_WrtTime;
-    unsigned short DIR_WrtDate;
-    unsigned short DIR_FstClusLO;
-    unsigned int DIR_FileSize;
+	char DIR_Name[11];
+	unsigned char DIR_Attr;
+	unsigned char DIR_NTRes;
+	unsigned char DIR_CrtTimeTenth;
+	unsigned short DIR_CrtTime;
+	unsigned short DIR_CrtDate;
+	unsigned short DIR_LstAccDate;
+	unsigned short DIR_FstClusHI;
+	unsigned short DIR_WrtTime;
+	unsigned short DIR_WrtDate;
+	unsigned short DIR_FstClusLO;
+	unsigned int DIR_FileSize;
 
 } Directory;
 
@@ -63,34 +63,34 @@ void setBootBlock(char * FILENAME)
 {
 	FILE * fat32 = fopen(FILENAME, "rb+");
 	// Reading in all data from Boot Sector
-    fread(&x.BS_jmpBoot, 1, 3, fat32);
-    fread(&x.BS_OEMName, 1, 8, fat32);
-    fread(&x.BPB_BytsPerSec, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_SecPerClus, sizeof(unsigned char), 1, fat32);
-    fread(&x.BPB_RsvdSecCnt, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_NumFATs, sizeof(unsigned char), 1, fat32);
-    fread(&x.BPB_RootEntCnt, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_TotSec16, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_Media, sizeof(unsigned char), 1, fat32);
-    fread(&x.BPB_FATSz16, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_SecPerTrk, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_NumHeads, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_HiddSec, sizeof(unsigned int), 1, fat32);
-    fread(&x.BPB_TotSec32, sizeof(unsigned int), 1, fat32);
-    fread(&x.BPB_FATSz32, sizeof(unsigned int), 1, fat32);
-    fread(&x.BPB_ExtFlags, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_FSVer, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_RootClus, sizeof(unsigned int), 1, fat32);
-    fread(&x.BPB_FSInfo, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_BkBootSec, sizeof(unsigned short), 1, fat32);
-    fread(&x.BPB_Reserved, 1, 12, fat32);
-    fread(&x.BS_DrvNum, sizeof(unsigned char), 1, fat32);
-    fread(&x.BS_Reserved1, sizeof(unsigned char), 1, fat32);
-    fread(&x.BS_BootSig, sizeof(unsigned char), 1, fat32);
-    fread(&x.BS_VolID, sizeof(unsigned int), 1, fat32);
-    fread(x.BS_VolLab, 1, 11, fat32);
-    fread(x.BS_FilSysType, 1, 8, fat32);
-    fclose(fat32);
+	fread(&x.BS_jmpBoot, 1, 3, fat32);
+	fread(&x.BS_OEMName, 1, 8, fat32);
+	fread(&x.BPB_BytsPerSec, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_SecPerClus, sizeof(unsigned char), 1, fat32);
+	fread(&x.BPB_RsvdSecCnt, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_NumFATs, sizeof(unsigned char), 1, fat32);
+	fread(&x.BPB_RootEntCnt, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_TotSec16, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_Media, sizeof(unsigned char), 1, fat32);
+	fread(&x.BPB_FATSz16, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_SecPerTrk, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_NumHeads, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_HiddSec, sizeof(unsigned int), 1, fat32);
+	fread(&x.BPB_TotSec32, sizeof(unsigned int), 1, fat32);
+	fread(&x.BPB_FATSz32, sizeof(unsigned int), 1, fat32);
+	fread(&x.BPB_ExtFlags, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_FSVer, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_RootClus, sizeof(unsigned int), 1, fat32);
+	fread(&x.BPB_FSInfo, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_BkBootSec, sizeof(unsigned short), 1, fat32);
+	fread(&x.BPB_Reserved, 1, 12, fat32);
+	fread(&x.BS_DrvNum, sizeof(unsigned char), 1, fat32);
+	fread(&x.BS_Reserved1, sizeof(unsigned char), 1, fat32);
+	fread(&x.BS_BootSig, sizeof(unsigned char), 1, fat32);
+	fread(&x.BS_VolID, sizeof(unsigned int), 1, fat32);
+	fread(x.BS_VolLab, 1, 11, fat32);
+	fread(x.BS_FilSysType, 1, 8, fat32);
+	fclose(fat32);
 }
 void initClusterNum (){
 	cluster_number = x.BPB_RootClus;
@@ -147,18 +147,18 @@ char* padDir(char* DIRNAME){
    strcpy(name, token);
    token = strtok(NULL, ".");
    if(token != NULL){
-      strcpy(extension, token);
-      len = 8;
+	  strcpy(extension, token);
+	  len = 8;
    }
    int i;
    for(i = strlen(name); i < len; i++){
-      strcat(name, " ");
+	  strcat(name, " ");
    }
    if(len == 8){
-      for(i = strlen(extension); i < 3; i++){
-         strcat(extension, " ");
-      }
-      strcat(name, extension);
+	  for(i = strlen(extension); i < 3; i++){
+		 strcat(extension, " ");
+	  }
+	  strcat(name, extension);
    }
    free(extension);
    return name;
@@ -178,42 +178,38 @@ unsigned int findCluster(char *FAT32, char *DIRNAME)
 	unsigned int FirstSectorofCluster = ((x.BPB_RootClus - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
 
 	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
-    {
-        current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
-        i = 1;
-        while((i * 32) < x.BPB_BytsPerSec) {
-        	fseek(fat32, current + (i * 32), SEEK_SET);
-            fread(&y, 32, 1, fat32);
-            for (nm = 0; nm < 11; nm++)
-            {
-            	if (y.DIR_Name[nm] != DIRNAME[nm])
-            	{
-            		break;
-            	}
-            	else if (y.DIR_Name[nm] == DIRNAME[nm] && nm == 10)
-            	{
-            		fclose(fat32);
-            		printf("File HI: 0x%x\nFile Lo: 0x%x\n", y.DIR_FstClusHI, y.DIR_FstClusLO);
-            		printf("File first bit: 0x%x\n", y.DIR_Name[0]);
-            		printf("File attribute: 0x%x\n", y.DIR_Attr);
-            		printf("Sent Cluster %x\n", (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO));
-            		if (y.DIR_Attr == 0x10)
-                  {
-            			return (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO);
-            		}
-            		else{
-			        	printf("Error: File is not a Directory.\n");
-			        	return cluster_number;
-        			}
-            	}
-            }
-            i += 2;
-        }
-        fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
-        fread(&cluster, sizeof(unsigned int), 1, fat32);
-    }
-    fclose(fat32);
-    printf("Error: File doesn't exist.\n");
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec) {
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
+			for (nm = 0; nm < 11; nm++)
+			{
+				if (y.DIR_Name[nm] != DIRNAME[nm])
+				{
+					break;
+				}
+				else if (y.DIR_Name[nm] == DIRNAME[nm] && nm == 10)
+				{
+					fclose(fat32);
+					if (y.DIR_Attr == 0x10)
+				  {
+						return (y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO);
+					}
+					else{
+						printf("Error: File is not a Directory.\n");
+						return cluster_number;
+					}
+				}
+			}
+			i += 2;
+		}
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
+	}
+	fclose(fat32);
+	printf("Error: File doesn't exist.\n");
 	return cluster_number;
 }
 
@@ -221,18 +217,18 @@ void cd(char* FAT32, char* DIRNAME){
    Directory y;
    unsigned int cluster = cluster_number;
    if(strcmp(DIRNAME, "/") == 0){
-      cluster = x.BPB_RootClus;
+	  cluster = x.BPB_RootClus;
    }else if(strcmp(DIRNAME, ".") == 0){
-      cluster = cluster_number;
+	  cluster = cluster_number;
    }else if(strcmp(DIRNAME, "..") == 0){
-      cluster = findCluster(FAT32, parentString);
-       if(cluster == 0){
-         cluster = x.BPB_RootClus;
-     	 }
+	  cluster = findCluster(FAT32, parentString);
+	   if(cluster == 0){
+		 cluster = x.BPB_RootClus;
+		 }
    }else{
-      char* tempDir = padDir(DIRNAME);
-      cluster = findCluster(FAT32, tempDir);
-      free(tempDir);
+	  char* tempDir = padDir(DIRNAME);
+	  cluster = findCluster(FAT32, tempDir);
+	  free(tempDir);
    }
    cluster_number = cluster;
 }
@@ -242,36 +238,33 @@ char* ls(char * FAT32, char* DIRNAME){
    unsigned int current = 0;
    unsigned int cluster = cluster_number;
    if(strcmp(DIRNAME, "/") == 0){
-      cluster = x.BPB_RootClus;
+	  cluster = x.BPB_RootClus;
    }else if(strcmp(DIRNAME, ".") == 0){
-      cluster = cluster_number;
+	  cluster = cluster_number;
    }else if(strcmp(DIRNAME, "..") == 0){
-      cluster = findCluster(FAT32, parentString);
-      if(cluster == 0){
-         cluster = x.BPB_RootClus;
-      }
-      if(cluster = cluster_number)
-      {
-      	return "Error";
-      }
+	  cluster = findCluster(FAT32, parentString);
+	  if(cluster == 0){
+		 cluster = x.BPB_RootClus;
+	  }
+	  if(cluster = cluster_number)
+	  {
+		return "Error";
+	  }
    }else {
-   		char* tempDir = padDir(DIRNAME);
-   		unsigned int temp = findCluster(FAT32, tempDir);
-   		free(tempDir);
-   		if (temp == cluster_number)
-   		{
+		char* tempDir = padDir(DIRNAME);
+		unsigned int temp = findCluster(FAT32, tempDir);
+		free(tempDir);
+		if (temp == cluster_number)
+		{
 
-   			return "Error";
-   		}
-   		else{
-      		cluster = temp;
-   		}
-      }           
+			return "Error";
+		}
+		else{
+			cluster = temp;
+		}
+	  }           
 	FILE * fat32 = fopen(FAT32, "rb+");
-  if (cluster == cluster_number)
-  {
-    printf(".\n");
-  }
+  printf(".\n");
 	int i = 1;
 	//Always 0 for FAT32
 	//unsigned int RootDirSectors = ((x.BPB_RootEntCnt * 32) + (x.BPB_BytsPerSec - 1)) / x.BPB_BytsPerSec;
@@ -279,50 +272,49 @@ char* ls(char * FAT32, char* DIRNAME){
 	//Ends up being same as FirstDataSector
 	unsigned int FirstSectorofCluster = ((x.BPB_RootClus - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
 	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
-    {
-        current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
-        i = 1;
-        while((i * 32) < x.BPB_BytsPerSec) {
-        	fseek(fat32, current + (i * 32), SEEK_SET);
-            fread(&y, 32, 1, fat32);
-            if(y.DIR_Name[0] == 0xE5)
-            {
-            	printf("EQUALS 0xEF");
-            	i += 2;
-            	continue;
-            }
-            //No entry after this one
-            else if(y.DIR_Name[0] == 0x00){
-            	printf("Empty Directory\n");
-                break;  
-                }  
-            else
-            {	//If pos 8 isn't a space that means it has an extention
-        		//A dot is implied
-            	if(y.DIR_Name[8] != ' '){
-            		/*y.DIR_Name[7] = '.';*/
-            		for (int i = 0; i < 8; i++)
-            		{
-            			if(y.DIR_Name[i] != ' ')
-            				printf("%c", y.DIR_Name[i]);
-            		}
-            		printf(".");
-            		for (int i = 8; i < 11; i++)
-            		{
-            			if(y.DIR_Name[i] != ' ')
-            				printf("%c", y.DIR_Name[i]);
-            		}
-            		printf("\n");
-            	}
-            	else
-                	printf("%.*s\n", 11, y.DIR_Name);
-            }
-            i += 2;
-        }
-        fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
-        fread(&cluster, sizeof(unsigned int), 1, fat32);
-    }
-    fclose(fat32);
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec) {
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
+			if(y.DIR_Name[0] == (char)0xE5)
+			{
+				printf("EQUALS 0xEF");
+				i += 2;
+				continue;
+			}
+			//No entry after this one empty y
+			else if(y.DIR_Name[0] == 0x00){
+				break;  
+				}  
+			else
+			{	//If pos 8 isn't a space that means it has an extention
+				//A dot is implied
+				if(y.DIR_Name[8] != ' '){
+					/*y.DIR_Name[7] = '.';*/
+					for (int i = 0; i < 8; i++)
+					{
+						if(y.DIR_Name[i] != ' ')
+							printf("%c", y.DIR_Name[i]);
+					}
+					printf(".");
+					for (int i = 8; i < 11; i++)
+					{
+						if(y.DIR_Name[i] != ' ')
+							printf("%c", y.DIR_Name[i]);
+					}
+					printf("\n");
+				}
+				else
+					printf("%.*s\n", 11, y.DIR_Name);
+			}
+			i += 2;
+		}
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
+	}
+	fclose(fat32);
 	return DIRNAME;
 }
 
@@ -340,39 +332,39 @@ void size(char * FAT32, char* DIRNAME){
 	unsigned int FirstSectorofCluster = ((x.BPB_RootClus - 2) * x.BPB_SecPerClus) + FirstDataSector * x.BPB_BytsPerSec;
 
 	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
-    {
-        current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
-        i = 1;
-        while((i * 32) < x.BPB_BytsPerSec) {
-        	fseek(fat32, current + (i * 32), SEEK_SET);
-            fread(&y, 32, 1, fat32);
-            for (nm = 0; nm < 11; nm++)
-            {
-            	if (y.DIR_Name[nm] != tempDir[nm])
-            	{
-            		break;
-            	}
-            	else if (y.DIR_Name[nm] == tempDir[nm] && nm == 10)
-            	{
-            		fclose(fat32);
-            		if (y.DIR_Attr != 0x10)
-        			{
-            			printf("File Size: %d\n", y.DIR_FileSize);
-			        	return;
-            		}
-            		else{
-			        	printf("Error: Not a file.\n");
-			        	return;
-        			}
-            	}
-            }
-            i += 2;
-        }
-        fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
-        fread(&cluster, sizeof(unsigned int), 1, fat32);
-    }
-    fclose(fat32);
-    printf("Error: File doesn't exist.\n");
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + FirstSectorofCluster;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec) {
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
+			for (nm = 0; nm < 11; nm++)
+			{
+				if (y.DIR_Name[nm] != tempDir[nm])
+				{
+					break;
+				}
+				else if (y.DIR_Name[nm] == tempDir[nm] && nm == 10)
+				{
+					fclose(fat32);
+					if (y.DIR_Attr != 0x10)
+					{
+						printf("File Size: %d\n", y.DIR_FileSize);
+						return;
+					}
+					else{
+						printf("Error: Not a file.\n");
+						return;
+					}
+				}
+			}
+			i += 2;
+		}
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
+	}
+	fclose(fat32);
+	printf("Error: File doesn't exist.\n");
 }
 
 int nameExists(char * DIRNAME)
@@ -380,848 +372,850 @@ int nameExists(char * DIRNAME)
 	return 0;
 }
 
-unsigned int findEmptyCluster(char* FAT32)
+unsigned int findAvailableCluster(char* FAT32)
 {
-    FILE *fp = fopen(FAT32, "rb+");
-    int i = 0;
-    unsigned int currClust;
-    unsigned int dataSec = x.BPB_TotSec32 + (x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32));
-    unsigned int clusterCount = dataSec / (x.BPB_SecPerClus * x.BPB_BytsPerSec);
+	FILE *fat32 = fopen(FAT32, "rb+");
+	int i = 0;
+	unsigned int current;
+	unsigned int dataSec = x.BPB_TotSec32 + (x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32));
+	unsigned int clusterCount = dataSec / (x.BPB_SecPerClus * x.BPB_BytsPerSec);
 
 
-    while(i < clusterCount)
-    {
-        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (i * sizeof(int)), SEEK_SET);
-        fread(&currClust, sizeof(unsigned int), 1, fp);
-        if(currClust == 0x00000000){
-            fclose(fp);
-            return i;
-        }
-        ++i;
-    }
-    fclose(fp);
-    return -1;
+	while(i < clusterCount)
+	{
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (i * sizeof(int)), SEEK_SET);
+		fread(&current, sizeof(unsigned int), 1, fat32);
+		if(current == 0x00000000){
+			fclose(fat32);
+			return i;
+		}
+		++i;
+	}
+	fclose(fat32);
+	return -1;
 
 }
 
-void mkdir(char* FAT32, char *dirname)
+void mkdir(char* FAT32, char *DIRNAME)
 {
-   unsigned int clust_num = cluster_number;
-    int i = 1, j= 0;
-    unsigned int currClust = 0, newCluster = 0;
-    unsigned int parentClust = clust_num;
-    unsigned int lastClust = clust_num;
+   unsigned int cluster = cluster_number;
+	int i = 1, j= 0;
+	unsigned int current = 0, newCluster = 0;
+	unsigned int parentClust = cluster;
+	unsigned int lastClust = cluster;
 
-    unsigned short holder, date;
+	unsigned short datePlace, date;
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
 
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-
-    Directory dir, newDir, dotDir, dotdotDir;
-
-
-    unsigned int nextEmpty = findEmptyCluster(FAT32), tempEmpty;
-    unsigned int usedClust = 0x0FFFFFF8;
-    unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
-
-    FILE *fp = fopen(FAT32, "rb+");
-
-    firstDataSector *= x.BPB_BytsPerSec;
+	Directory y, ourDir, ourCurDir, ourParDir;
 
 
-    while(clust_num != 0x0FFFFFF8 && clust_num != 0x0FFFFFFF)
-    {
-        currClust = ((clust_num - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-        i = 1;
-        do{
-            fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
-            fread(&dir, sizeof(Directory), 1, fp);
-            if(dir.DIR_Name[0] == 0x00 || dir.DIR_Name[0] == (char) 0xE5)
-            {
-                fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nextEmpty * sizeof(int)), SEEK_SET);
-                fwrite(&usedClust, sizeof(int), 1, fp);
+	unsigned int nextWrite = findAvailableCluster(FAT32), tempEmpty;
+	unsigned int setUsed = 0x0FFFFFF8;
+	unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
 
-                memset(&newDir, 0, sizeof(Directory));
-                for(int j = 0; j < 11; ++j)
-                {
-                    if(j >= strlen(dirname))
-                    {
-                        newDir.DIR_Name[j] = 0x20;
-                    } else {
-                        newDir.DIR_Name[j] = dirname[j];
-                    }
-                }
-                newDir.DIR_Attr = 0x10;
-                newDir.DIR_FstClusHI = nextEmpty/0x100;
-                newDir.DIR_FstClusLO = nextEmpty%0x100;
-                newDir.DIR_WrtDate = tm.tm_mday;
-                holder = tm.tm_mon << 5;
+	FILE *fat32 = fopen(FAT32, "rb+");
 
-                newDir.DIR_WrtDate = newDir.DIR_WrtDate | (unsigned short) holder;
-                holder = 0;
-                holder = (tm.tm_year - 80)<< 9;
-                newDir.DIR_WrtDate = newDir.DIR_WrtDate | (unsigned short) holder;
-
-                holder = 0;
-                newDir.DIR_WrtTime = tm.tm_sec/2;
-                holder = tm.tm_min << 5;
-                newDir.DIR_WrtTime = newDir.DIR_WrtTime | holder;
-                holder = 0;
-                holder = tm.tm_hour << 11;
-                newDir.DIR_WrtTime = newDir.DIR_WrtTime | holder;
+	firstDataSector *= x.BPB_BytsPerSec;
 
 
-                fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
-                fwrite(&newDir, sizeof(Directory), 1, fp);
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec)
+		{
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
+			if(y.DIR_Name[0] == 0x00 || y.DIR_Name[0] == (char) 0xE5)
+			{
+				fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nextWrite * sizeof(int)), SEEK_SET);
+				fwrite(&setUsed, sizeof(int), 1, fat32);
+
+				memset(&ourDir, 0, 32);
+				for(int j = 0; j < 11; ++j)
+				{
+					if(j >= strlen(DIRNAME))
+					{
+						ourDir.DIR_Name[j] = 0x20;
+					} else {
+						ourDir.DIR_Name[j] = DIRNAME[j];
+					}
+				}
+				ourDir.DIR_Attr = 0x10;
+				ourDir.DIR_FstClusHI = nextWrite/0x100;
+				ourDir.DIR_FstClusLO = nextWrite%0x100;
+				ourDir.DIR_WrtDate = tm.tm_mday;
+				datePlace = tm.tm_mon << 5;
+
+				ourDir.DIR_WrtDate = ourDir.DIR_WrtDate | (unsigned short) datePlace;
+				datePlace = 0;
+				datePlace = (tm.tm_year - 80)<< 9;
+				ourDir.DIR_WrtDate = ourDir.DIR_WrtDate | (unsigned short) datePlace;
+
+				datePlace = 0;
+				ourDir.DIR_WrtTime = tm.tm_sec/2;
+				datePlace = tm.tm_min << 5;
+				ourDir.DIR_WrtTime = ourDir.DIR_WrtTime | datePlace;
+				datePlace = 0;
+				datePlace = tm.tm_hour << 11;
+				ourDir.DIR_WrtTime = ourDir.DIR_WrtTime | datePlace;
 
 
-                currClust = ((nextEmpty - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector; //- (sizeof(FAT32Directory));
-                memset(&dotDir, 0, sizeof(Directory));
-                for(j = 0; j < 11; ++j)
-                {
-                    if(j==0){
-                        dotDir.DIR_Name[0] = '.';
-                    } else {
-                        dotDir.DIR_Name[j] = ' ';
-                    }
-                }
-                dotDir.DIR_Attr = 0x10;
-                dotDir.DIR_FstClusLO = newDir.DIR_FstClusLO;
-                dotDir.DIR_FstClusHI = newDir.DIR_FstClusHI;
-
-                fseek(fp, currClust, SEEK_SET);
-                fwrite(&dotDir, sizeof(Directory), 1, fp);
-
-                memset(&dotdotDir, 0, sizeof(Directory));
-
-                for(j = 0; j < 11; ++j)
-                {
-                    if(j < 2){
-                        dotdotDir.DIR_Name[j] = '.';
-                    } else {
-                        dotdotDir.DIR_Name[j] = ' ';
-                    }
-                }
-                dotdotDir.DIR_Attr = 0x10;
-                dotdotDir.DIR_FstClusHI = parentClust / 0x100;
-                dotdotDir.DIR_FstClusLO = parentClust % 0x100;
-
-                fseek(fp, currClust + sizeof(Directory), SEEK_SET);
-                fwrite(&dotdotDir, sizeof(Directory), 1, fp);
+				fseek(fat32, current + (i * 32), SEEK_SET);
+				fwrite(&ourDir, 32, 1, fat32);
 
 
-                fclose(fp);
-                return; //fuck
-            }
-            for(j = 0; j < 11; ++j)
-            {
-                if(dir.DIR_Name[j] == 0x20)
-                {
-                    dir.DIR_Name[j] = '\0';
-                    break;
-                }
-            }
-            if(strcmp(dir.DIR_Name, dirname) == 0)
-            {
-                printf("Error, the directory you entered already exists.\n");
-                return;
-            }
-            i += 2;
-        } while((i * sizeof(Directory)) < x.BPB_BytsPerSec);
+				current = ((nextWrite - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector; //- (sizeof(FAT32Directory));
+				memset(&ourCurDir, 0, 32);
+				for(j = 0; j < 11; ++j)
+				{
+					if(j==0){
+						ourCurDir.DIR_Name[0] = '.';
+					} else {
+						ourCurDir.DIR_Name[j] = ' ';
+					}
+				}
+				ourCurDir.DIR_Attr = 0x10;
+				ourCurDir.DIR_FstClusLO = ourDir.DIR_FstClusLO;
+				ourCurDir.DIR_FstClusHI = ourDir.DIR_FstClusHI;
+
+				fseek(fat32, current, SEEK_SET);
+				fwrite(&ourCurDir, 32, 1, fat32);
+
+				memset(&ourParDir, 0, 32);
+
+				for(j = 0; j < 11; ++j)
+				{
+					if(j < 2){
+						ourParDir.DIR_Name[j] = '.';
+					} else {
+						ourParDir.DIR_Name[j] = ' ';
+					}
+				}
+				ourParDir.DIR_Attr = 0x10;
+				ourParDir.DIR_FstClusHI = parentClust / 0x100;
+				ourParDir.DIR_FstClusLO = parentClust % 0x100;
+
+				fseek(fat32, current + 32, SEEK_SET);
+				fwrite(&ourParDir, 32, 1, fat32);
 
 
-        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (clust_num * sizeof(int)), SEEK_SET);
-        fread(&clust_num, sizeof(unsigned int), 1, fp);
-
-        if(clust_num != 0x0FFFFFF8 && clust_num != 0x0FFFFFFF)
-            lastClust = clust_num;
-    }
-
-    fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (lastClust * sizeof(int)), SEEK_SET);
-    fwrite(&nextEmpty, sizeof(unsigned int), 1, fp);
-
-    //for(i = 0; i < 2; ++i){
-    fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + ((nextEmpty) * sizeof(int)), SEEK_SET);
-    fwrite(&usedClust, sizeof(unsigned int), 1, fp);
-
-    //fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + ((nextEmpty+1) * sizeof(int)), SEEK_SET);
-    //fwrite(&usedClust, sizeof(unsigned int), 1, fp);
-    //}
-    fclose(fp);
-    tempEmpty = findEmptyCluster(FAT32);
-    fp = fopen(FAT32, "rb+");
-
-    currClust = ((nextEmpty - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector; //- (sizeof(FAT32Directory));
-
-    memset(&newDir, 0, sizeof(Directory));
-    for(int j = 0; j < 11; ++j)
-    {
-        if(j >= strlen(dirname))
-        {
-            newDir.DIR_Name[j] = 0x20;
-        } else {
-            newDir.DIR_Name[j] = dirname[j];
-        }
-    }
+				fclose(fat32);
+				return; //fuck
+			}
+			for(j = 0; j < 11; ++j)
+			{
+				if(y.DIR_Name[j] == 0x20)
+				{
+					y.DIR_Name[j] = '\0';
+					break;
+				}
+			}
+			if(strcmp(y.DIR_Name, DIRNAME) == 0)
+			{
+				printf("Error, the directory you entered already exists.\n");
+				return;
+			}
+			i += 2;
+		} 
 
 
-    newDir.DIR_Attr = 0x10;
-    newDir.DIR_FstClusHI = tempEmpty/0x100;
-    newDir.DIR_FstClusLO = tempEmpty%0x100;
-    newDir.DIR_WrtDate = tm.tm_mday;
-    holder = tm.tm_mon << 5;
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
 
-    newDir.DIR_WrtDate = newDir.DIR_WrtDate | (unsigned short) holder;
-    holder = (tm.tm_year - 80)<< 9;
-    newDir.DIR_WrtDate = newDir.DIR_WrtDate | (unsigned short) holder;
+		if(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+			lastClust = cluster;
+	}
 
-    holder = 0;
-    newDir.DIR_WrtTime = tm.tm_sec/2;
-    holder = tm.tm_min << 5;
-    newDir.DIR_WrtTime = newDir.DIR_WrtTime | holder;
-    holder = 0;
-    holder = tm.tm_hour << 11;
-    newDir.DIR_WrtTime = newDir.DIR_WrtTime | holder;
+	fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (lastClust * sizeof(int)), SEEK_SET);
+	fwrite(&nextWrite, sizeof(unsigned int), 1, fat32);
+
+	//for(i = 0; i < 2; ++i){
+	fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + ((nextWrite) * sizeof(int)), SEEK_SET);
+	fwrite(&setUsed, sizeof(unsigned int), 1, fat32);
+
+	//fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + ((nextWrite+1) * sizeof(int)), SEEK_SET);
+	//fwrite(&setUsed, sizeof(unsigned int), 1, fat32);
+	//}
+	fclose(fat32);
+	tempEmpty = findAvailableCluster(FAT32);
+	fat32 = fopen(FAT32, "rb+");
+
+	current = ((nextWrite - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector; //- (sizeof(FAT32Directory));
+
+	memset(&ourDir, 0, 32);
+	for(int j = 0; j < 11; ++j)
+	{
+		if(j >= strlen(DIRNAME))
+		{
+			ourDir.DIR_Name[j] = 0x20;
+		} else {
+			ourDir.DIR_Name[j] = DIRNAME[j];
+		}
+	}
 
 
-    fseek(fp, currClust + sizeof(Directory), SEEK_SET);
-    fwrite(&newDir, sizeof(Directory), 1, fp);
+	ourDir.DIR_Attr = 0x10;
+	ourDir.DIR_FstClusHI = tempEmpty/0x100;
+	ourDir.DIR_FstClusLO = tempEmpty%0x100;
+	ourDir.DIR_WrtDate = tm.tm_mday;
+	datePlace = tm.tm_mon << 5;
 
-    nextEmpty = tempEmpty;
+	ourDir.DIR_WrtDate = ourDir.DIR_WrtDate | (unsigned short) datePlace;
+	datePlace = (tm.tm_year - 80)<< 9;
+	ourDir.DIR_WrtDate = ourDir.DIR_WrtDate | (unsigned short) datePlace;
 
-    fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nextEmpty * sizeof(int)), SEEK_SET);
-    fwrite(&usedClust, sizeof(int), 1,fp);
+	datePlace = 0;
+	ourDir.DIR_WrtTime = tm.tm_sec/2;
+	datePlace = tm.tm_min << 5;
+	ourDir.DIR_WrtTime = ourDir.DIR_WrtTime | datePlace;
+	datePlace = 0;
+	datePlace = tm.tm_hour << 11;
+	ourDir.DIR_WrtTime = ourDir.DIR_WrtTime | datePlace;
 
-    currClust = ((nextEmpty - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector; //- (sizeof(FAT32Directory));
-    memset(&dotDir, 0, sizeof(Directory));
-    for(j = 0; j < 11; ++j)
-    {
-        if(j==0){
-            dotDir.DIR_Name[0] = '.';
-        } else {
-            dotDir.DIR_Name[j] = ' ';
-        }
-    }
-    dotDir.DIR_Attr = 0x10;
-    dotDir.DIR_FstClusLO = nextEmpty / 0x100;
-    dotDir.DIR_FstClusHI = nextEmpty % 0x100;
 
-    fseek(fp, currClust, SEEK_SET);
-    fwrite(&dotDir, sizeof(Directory), 1, fp);
+	fseek(fat32, current + 32, SEEK_SET);
+	fwrite(&ourDir, 32, 1, fat32);
 
-    memset(&dotdotDir, 0, sizeof(Directory));
+	nextWrite = tempEmpty;
 
-    for(j = 0; j < 11; ++j)
-    {
-        if(j < 2){
-            dotdotDir.DIR_Name[j] = '.';
-        } else {
-            dotdotDir.DIR_Name[j] = ' ';
-        }
-    }
-    dotdotDir.DIR_Attr = 0x10;
-    dotdotDir.DIR_FstClusHI = parentClust / 0x100;
-    dotdotDir.DIR_FstClusLO = parentClust % 0x100;
+	fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nextWrite * sizeof(int)), SEEK_SET);
+	fwrite(&setUsed, sizeof(int), 1,fat32);
 
-    fseek(fp, currClust + sizeof(Directory), SEEK_SET);
-    fwrite(&dotdotDir, sizeof(Directory), 1, fp);
+	current = ((nextWrite - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector; //- (sizeof(FAT32Directory));
+	memset(&ourCurDir, 0, 32);
+	for(j = 0; j < 11; ++j)
+	{
+		if(j==0){
+			ourCurDir.DIR_Name[0] = '.';
+		} else {
+			ourCurDir.DIR_Name[j] = ' ';
+		}
+	}
+	ourCurDir.DIR_Attr = 0x10;
+	ourCurDir.DIR_FstClusLO = nextWrite / 0x100;
+	ourCurDir.DIR_FstClusHI = nextWrite % 0x100;
 
-    fclose(fp);
+	fseek(fat32, current, SEEK_SET);
+	fwrite(&ourCurDir, 32, 1, fat32);
+
+	memset(&ourParDir, 0, 32);
+
+	for(j = 0; j < 11; ++j)
+	{
+		if(j < 2){
+			ourParDir.DIR_Name[j] = '.';
+		} else {
+			ourParDir.DIR_Name[j] = ' ';
+		}
+	}
+	ourParDir.DIR_Attr = 0x10;
+	ourParDir.DIR_FstClusHI = parentClust / 0x100;
+	ourParDir.DIR_FstClusLO = parentClust % 0x100;
+
+	fseek(fat32, current + 32, SEEK_SET);
+	fwrite(&ourParDir, 32, 1, fat32);
+
+	fclose(fat32);
 }
 
 void creat(char* FAT32, char* FILENAME)
 {
-    unsigned int clust_num = cluster_number;
-    int i = 1, j= 0;
-    unsigned int currClust = 0, newCluster = 0;
-    unsigned int parentClust = clust_num;
-    unsigned int lastClust = clust_num;
+	unsigned int cluster = cluster_number;
+	int i = 1, j= 0;
+	unsigned int current = 0, newCluster = 0;
+	unsigned int parentClust = cluster;
+	unsigned int lastClust = cluster;
 
-    unsigned short holder, date;
+	unsigned short datePlace, date;
 
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
 
-    Directory dir, newDir, dotDir, dotdotDir;
-
-
-    unsigned int nextEmpty = findEmptyCluster(FAT32), tempEmpty;
-    unsigned int usedClust = 0x0FFFFFF8;
-    unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
-
-    FILE *fp = fopen(FAT32, "rb+");
-
-    firstDataSector *= x.BPB_BytsPerSec;
+	Directory y, ourDir, ourCurDir, ourParDir;
 
 
-    while(clust_num != 0x0FFFFFF8 && clust_num != 0x0FFFFFFF)
-    {
-        currClust = ((clust_num - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-        i = 1;
-        do{
-            fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
-            fread(&dir, sizeof(Directory), 1, fp);
-            if(dir.DIR_Name[0] == 0x00 || dir.DIR_Name[0] == (char) 0xE5)
-            {
-                fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nextEmpty * sizeof(int)), SEEK_SET);
-                fwrite(&usedClust, sizeof(int), 1, fp);
+	unsigned int nextWrite = findAvailableCluster(FAT32), tempEmpty;
+	unsigned int setUsed = 0x0FFFFFF8;
+	unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
 
-                memset(&newDir, 0, sizeof(Directory));
-                char* padded = padDir(FILENAME);
-                strcpy(newDir.DIR_Name, padded);
-                free(padded);
-                newDir.DIR_FstClusHI = nextEmpty/0x100;
-                newDir.DIR_FstClusLO = nextEmpty%0x100;
-                newDir.DIR_WrtDate = tm.tm_mday;
-                holder = tm.tm_mon << 5;
+	FILE *fat32 = fopen(FAT32, "rb+");
 
-                newDir.DIR_WrtDate = newDir.DIR_WrtDate | (unsigned short) holder;
-                holder = 0;
-                holder = (tm.tm_year - 80)<< 9;
-                newDir.DIR_WrtDate = newDir.DIR_WrtDate | (unsigned short) holder;
-
-                holder = 0;
-                newDir.DIR_WrtTime = tm.tm_sec/2;
-                holder = tm.tm_min << 5;
-                newDir.DIR_WrtTime = newDir.DIR_WrtTime | holder;
-                holder = 0;
-                holder = tm.tm_hour << 11;
-                newDir.DIR_WrtTime = newDir.DIR_WrtTime | holder;
+	firstDataSector *= x.BPB_BytsPerSec;
 
 
-                fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
-                fwrite(&newDir, sizeof(Directory), 1, fp);
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec){
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
+			if(y.DIR_Name[0] == 0x00 || y.DIR_Name[0] == (char) 0xE5)
+			{
+				fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nextWrite * sizeof(int)), SEEK_SET);
+				fwrite(&setUsed, sizeof(int), 1, fat32);
 
-                //printf("%x\n", nextEmpty);
+				memset(&ourDir, 0, 32);
+				char* padded = padDir(FILENAME);
+				strcpy(ourDir.DIR_Name, padded);
+				free(padded);
+				ourDir.DIR_FstClusHI = nextWrite/0x100;
+				ourDir.DIR_FstClusLO = nextWrite%0x100;
+				ourDir.DIR_WrtDate = tm.tm_mday;
+				datePlace = tm.tm_mon << 5;
 
+				ourDir.DIR_WrtDate = ourDir.DIR_WrtDate | (unsigned short) datePlace;
+				datePlace = 0;
+				datePlace = (tm.tm_year - 80)<< 9;
+				ourDir.DIR_WrtDate = ourDir.DIR_WrtDate | (unsigned short) datePlace;
 
-                fclose(fp);
-                return; //fuck
-            }
-            for(j = 0; j < 11; ++j)
-            {
-                if(dir.DIR_Name[j] == 0x20)
-                {
-                    dir.DIR_Name[j] = '\0';
-                    break;
-                }
-            }
-            if(strcmp(dir.DIR_Name, FILENAME) == 0)
-            {
-                printf("Error, the directory you entered already exists.\n");
-                return;
-            }
-            i += 2;
-        } while((i * sizeof(Directory)) < x.BPB_BytsPerSec);
-
-
-        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (clust_num * sizeof(int)), SEEK_SET);
-        fread(&clust_num, sizeof(unsigned int), 1, fp);
-
-        if(clust_num != 0x0FFFFFF8 && clust_num != 0x0FFFFFFF)
-            lastClust = clust_num;
-    }
-
-    fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (lastClust * sizeof(int)), SEEK_SET);
-    fwrite(&nextEmpty, sizeof(unsigned int), 1, fp);
-
-    //for(i = 0; i < 2; ++i){
-    fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + ((nextEmpty) * sizeof(int)), SEEK_SET);
-    fwrite(&usedClust, sizeof(unsigned int), 1, fp);
-
-    fclose(fp);
-    tempEmpty = findEmptyCluster(FAT32);
-    fp = fopen(FAT32, "rb+");
-
-    currClust = ((nextEmpty - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-
-    memset(&newDir, 0, sizeof(Directory));
-    char* padded = padDir(FILENAME);
-    strcpy(newDir.DIR_Name, padded);
-    free(padded);
-
-    newDir.DIR_FstClusHI = tempEmpty/0x100;
-    newDir.DIR_FstClusLO = tempEmpty%0x100;
-    newDir.DIR_WrtDate = tm.tm_mday;
-    holder = tm.tm_mon << 5;
-
-    newDir.DIR_WrtDate = newDir.DIR_WrtDate | (unsigned short) holder;
-    holder = (tm.tm_year - 80)<< 9;
-    newDir.DIR_WrtDate = newDir.DIR_WrtDate | (unsigned short) holder;
-
-    holder = 0;
-    newDir.DIR_WrtTime = tm.tm_sec/2;
-    holder = tm.tm_min << 5;
-    newDir.DIR_WrtTime = newDir.DIR_WrtTime | holder;
-    holder = 0;
-    holder = tm.tm_hour << 11;
-    newDir.DIR_WrtTime = newDir.DIR_WrtTime | holder;
+				datePlace = 0;
+				ourDir.DIR_WrtTime = tm.tm_sec/2;
+				datePlace = tm.tm_min << 5;
+				ourDir.DIR_WrtTime = ourDir.DIR_WrtTime | datePlace;
+				datePlace = 0;
+				datePlace = tm.tm_hour << 11;
+				ourDir.DIR_WrtTime = ourDir.DIR_WrtTime | datePlace;
 
 
-    fseek(fp, currClust + sizeof(Directory), SEEK_SET);
-    fwrite(&newDir, sizeof(Directory), 1, fp);
+				fseek(fat32, current + (i * 32), SEEK_SET);
+				fwrite(&ourDir, 32, 1, fat32);
 
-    nextEmpty = tempEmpty;
+				//printf("%x\n", nextWrite);
 
-    fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nextEmpty * sizeof(int)), SEEK_SET);
-    fwrite(&usedClust, sizeof(int), 1,fp);
 
-    fclose(fp);
+				fclose(fat32);
+				return; //fuck
+			}
+			for(j = 0; j < 11; ++j)
+			{
+				if(y.DIR_Name[j] == 0x20)
+				{
+					y.DIR_Name[j] = '\0';
+					break;
+				}
+			}
+			if(strcmp(y.DIR_Name, FILENAME) == 0)
+			{
+				printf("Error, the directory you entered already exists.\n");
+				return;
+			}
+			i += 2;
+		}
+
+
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
+
+		if(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+			lastClust = cluster;
+	}
+
+	fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (lastClust * sizeof(int)), SEEK_SET);
+	fwrite(&nextWrite, sizeof(unsigned int), 1, fat32);
+
+	//for(i = 0; i < 2; ++i){
+	fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + ((nextWrite) * sizeof(int)), SEEK_SET);
+	fwrite(&setUsed, sizeof(unsigned int), 1, fat32);
+
+	fclose(fat32);
+	tempEmpty = findAvailableCluster(FAT32);
+	fat32 = fopen(FAT32, "rb+");
+
+	current = ((nextWrite - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+
+	memset(&ourDir, 0, 32);
+	char* padded = padDir(FILENAME);
+	strcpy(ourDir.DIR_Name, padded);
+	free(padded);
+
+	ourDir.DIR_FstClusHI = tempEmpty/0x100;
+	ourDir.DIR_FstClusLO = tempEmpty%0x100;
+	ourDir.DIR_WrtDate = tm.tm_mday;
+	datePlace = tm.tm_mon << 5;
+
+	ourDir.DIR_WrtDate = ourDir.DIR_WrtDate | (unsigned short) datePlace;
+	datePlace = (tm.tm_year - 80)<< 9;
+	ourDir.DIR_WrtDate = ourDir.DIR_WrtDate | (unsigned short) datePlace;
+
+	datePlace = 0;
+	ourDir.DIR_WrtTime = tm.tm_sec/2;
+	datePlace = tm.tm_min << 5;
+	ourDir.DIR_WrtTime = ourDir.DIR_WrtTime | datePlace;
+	datePlace = 0;
+	datePlace = tm.tm_hour << 11;
+	ourDir.DIR_WrtTime = ourDir.DIR_WrtTime | datePlace;
+
+
+	fseek(fat32, current + 32, SEEK_SET);
+	fwrite(&ourDir, 32, 1, fat32);
+
+	nextWrite = tempEmpty;
+
+	fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nextWrite * sizeof(int)), SEEK_SET);
+	fwrite(&setUsed, sizeof(int), 1,fat32);
+
+	fclose(fat32);
 }
 
 void openMyFile(char* FAT32,  char* FILENAME, char* mode)
 {
-    int i = 1, j;
-    unsigned int currClust = 0;
-    unsigned int trackClust = cluster_number;
-    Directory dir;
-    Status fs;
-    int * openSize = &statSize;
-    FILE *fp = fopen(FAT32, "rb+");
+	int i = 1, j;
+	unsigned int current = 0;
+	unsigned int cluster = cluster_number;
+	Directory y;
+	Status fs;
+	int * openSize = &statSize;
+	FILE *fat32 = fopen(FAT32, "rb+");
 
-    unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
-    firstDataSector *= x.BPB_BytsPerSec;
+	unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
+	firstDataSector *= x.BPB_BytsPerSec;
 
-    // check that the mode is valid
+	// check that the mode is valid
 
-    while(trackClust != 0x0FFFFFF8 && trackClust != 0x0FFFFFFF)
-    {
-        currClust = ((trackClust - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-        i = 1;
-        do{
-            fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
-            fread(&dir, sizeof(Directory), 1, fp);
-            char* tempName = (char*) malloc(12);
-            tempName[11] = '\0';
-            if(dir.DIR_Name[8] != ' ')
-               dir.DIR_Name[7] = '.';
-            int j = 0;
-            for(j; j < 11; ++j) {
-               if( dir.DIR_Name[j] == 0x20) {
-                  tempName[j] = '\0';
-                  break;
-               }
-               else
-                 tempName[j] = dir.DIR_Name[j];
-            }
-            // if we found the name and it isn't a directory
-            if(strncmp(tempName, FILENAME, 11) == 0 && dir.DIR_Attr != 0x10)
-            {
-                fs.clust_num = dir.DIR_FstClusHI * 0x100 + dir.DIR_FstClusLO;
-                // look through open file list to see if it is already open
-                for (int l = 0; l < (*openSize); ++l) {
-                    // if we find the file in the list
-                    if (opened[l].clust_num == fs.clust_num) {
-                        printf("ERROR: This file is already open.\n");
-                        return;
-                    }
-                }
-                // if read only and chosen mode is read
-                if((dir.DIR_Attr & 0x01) == 0x01 && (strcmp(mode, "r") == 0 || strcmp(mode, "R") == 0)) // read only
-                {
-                    fs.mode = 0;
-                }
-                    // else if not read only
-                else if((dir.DIR_Attr & 0x01) != 0x01)
-                {
-                    if(strcmp(mode, "r") == 0 || strcmp(mode, "R") == 0)
-                    {
-                        fs.mode = 0;
-                    } else if(strcmp(mode, "w") == 0 || strcmp(mode, "W") == 0){
-                        fs.mode = 1;
-                    } else if(strcmp(mode, "rw") == 0 || strcmp(mode, "wr") == 0
-                              || strcmp(mode, "RW") == 0 || strcmp(mode, "WR") == 0)
-                    {
-                        fs.mode = 2;
-                    } else {
-                        printf("ERROR: Invalid mode.\n");
-                        return;
-                    }
-                } else {
-                    // if we get here, then the user tried to open a read only file in a write mode
-                    printf("ERROR: Cannot open a read-only file in write mode.\n");
-                    return;
-                }
-                opened[(*openSize)++] = fs;
-                return;
-            }
-            i += 2;
-        } while((i * sizeof(Directory)) < x.BPB_BytsPerSec);
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec);
+		{
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
+			char* tempName = (char*) malloc(12);
+			tempName[11] = '\0';
+			if(y.DIR_Name[8] != ' ')
+			   y.DIR_Name[7] = '.';
+			int j = 0;
+			for(j; j < 11; ++j) {
+			   if( y.DIR_Name[j] == 0x20) {
+				  tempName[j] = '\0';
+				  break;
+			   }
+			   else
+				 tempName[j] = y.DIR_Name[j];
+			}
+			// if we found the name and it isn't a directory
+			if(strncmp(tempName, FILENAME, 11) == 0 && y.DIR_Attr != 0x10)
+			{
+				fs.cluster = y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO;
+				// look through open file list to see if it is already open
+				for (int l = 0; l < (*openSize); ++l) {
+					// if we find the file in the list
+					if (opened[l].cluster == fs.cluster) {
+						printf("ERROR: This file is already open.\n");
+						return;
+					}
+				}
+				// if read only and chosen mode is read
+				if((y.DIR_Attr & 0x01) == 0x01 && (strcmp(mode, "r") == 0 || strcmp(mode, "R") == 0)) // read only
+				{
+					fs.mode = 0;
+				}
+					// else if not read only
+				else if((y.DIR_Attr & 0x01) != 0x01)
+				{
+					if(strcmp(mode, "r") == 0 || strcmp(mode, "R") == 0)
+					{
+						fs.mode = 0;
+					} else if(strcmp(mode, "w") == 0 || strcmp(mode, "W") == 0){
+						fs.mode = 1;
+					} else if(strcmp(mode, "rw") == 0 || strcmp(mode, "wr") == 0
+							  || strcmp(mode, "RW") == 0 || strcmp(mode, "WR") == 0)
+					{
+						fs.mode = 2;
+					} else {
+						printf("ERROR: Invalid mode.\n");
+						return;
+					}
+				} else {
+					// if we get here, then the user tried to open a read only file in a write mode
+					printf("ERROR: Cannot open a read-only file in write mode.\n");
+					return;
+				}
+				opened[(*openSize)++] = fs;
+				return;
+			}
+			i += 2;
+		} 
 
 
-        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
-        fread(&trackClust, sizeof(unsigned int), 1, fp);
-    }
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
+	}
 
-    fclose(fp);
+	fclose(fat32);
 }
 
 void closeMyFile(char* FAT32, char* FILENAME)
 {
-    int i = 1, j;
-    unsigned int currClust = 0;
-    unsigned int trackClust = cluster_number;
-    Directory dir;
-    Status fs;
-    int * openSize = &statSize;
-    FILE *fp = fopen(FAT32, "rb+");
+	int i = 1, j;
+	unsigned int current = 0;
+	unsigned int cluster = cluster_number;
+	Directory y;
+	Status fs;
+	int * openSize = &statSize;
+	FILE *fat32 = fopen(FAT32, "rb+");
 
-    unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
-    firstDataSector *= x.BPB_BytsPerSec;
+	unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
+	firstDataSector *= x.BPB_BytsPerSec;
 
-    while(trackClust != 0x0FFFFFF8 && trackClust != 0x0FFFFFFF)
-    {
-        currClust = ((trackClust - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-        i = 1;
-        do{
-            fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
-            fread(&dir, sizeof(Directory), 1, fp);
-            char* tempName = (char*) malloc(12);
-            tempName[11] = '\0';
-            if(dir.DIR_Name[8] != ' ')
-               dir.DIR_Name[7] = '.';
-            int j = 0;
-            for(j; j < 11; ++j) {
-               if( dir.DIR_Name[j] == 0x20) {
-                  tempName[j] = '\0';
-                  break;
-               }
-               else
-                 tempName[j] = dir.DIR_Name[j];
-            }
-            // if we found the name and it isn't a directory
-            if(strncmp(tempName, FILENAME, 11) == 0 && dir.DIR_Attr != 0x10)
-            {
-                fs.clust_num = dir.DIR_FstClusHI * 0x100 + dir.DIR_FstClusLO;
-                // look through open file list to see if it is already open
-                for (int l = 0; l < (*openSize); ++l) {
-                    // if we find the file in the list
-                    if (opened[l].clust_num == fs.clust_num) {
-                        // move each element of the array after back one to remove from opened
-                        for (int m = l; m < (*openSize)-1; ++m) {
-                            opened[m] = opened[m+1];
-                        }
-                        // decrement the size
-                        --(*openSize);
-                        return;
-                    }
-                }
-            }
-            i += 2;
-        } while((i * sizeof(Directory)) < x.BPB_BytsPerSec);
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec){
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
+			char* tempName = (char*) malloc(12);
+			tempName[11] = '\0';
+			if(y.DIR_Name[8] != ' ')
+			   y.DIR_Name[7] = '.';
+			int j = 0;
+			for(j; j < 11; ++j) {
+			   if( y.DIR_Name[j] == 0x20) {
+				  tempName[j] = '\0';
+				  break;
+			   }
+			   else
+				 tempName[j] = y.DIR_Name[j];
+			}
+			// if we found the name and it isn't a directory
+			if(strncmp(tempName, FILENAME, 11) == 0 && y.DIR_Attr != 0x10)
+			{
+				fs.cluster = y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO;
+				// look through open file list to see if it is already open
+				for (int l = 0; l < (*openSize); ++l) {
+					// if we find the file in the list
+					if (opened[l].cluster == fs.cluster) {
+						// move each element of the array after back one to remove from opened
+						for (int m = l; m < (*openSize)-1; ++m) {
+							opened[m] = opened[m+1];
+						}
+						// decrement the size
+						--(*openSize);
+						return;
+					}
+				}
+			}
+			i += 2;
+		} 
 
 
-        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
-        fread(&trackClust, sizeof(unsigned int), 1, fp);
-    }
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
+	}
 
-    fclose(fp);
+	fclose(fat32);
 }
 
 void readMyFile(char *FAT32, char *FILENAME, char* OFFSET, char* SIZE)
 {
-    int i = 1, j, k;
-    int off = atoi(OFFSET), size = atoi(SIZE);
-    unsigned int currClust = 0;
-    unsigned int trackClust = cluster_number;
-    Directory dir;
-    Status fs;
-    FILE *fp = fopen(FAT32, "rb+");
-    char *output;
-    unsigned int startClus = off / x.BPB_BytsPerSec;
-    unsigned int startPos = off % x.BPB_BytsPerSec;
-    unsigned int currSize = 0;
-    char* tempName = (char*) malloc(12);;
+	int i = 1, j, k;
+	int off = atoi(OFFSET), size = atoi(SIZE);
+	unsigned int current = 0;
+	unsigned int cluster = cluster_number;
+	Directory y;
+	Status fs;
+	FILE *fat32 = fopen(FAT32, "rb+");
+	char *output;
+	unsigned int firstClus = off / x.BPB_BytsPerSec;
+	unsigned int startPos = off % x.BPB_BytsPerSec;
+	unsigned int currSize = 0;
+	char* tempName = (char*) malloc(12);;
 
-    // go to first reserved sector
-    unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
-    firstDataSector *= x.BPB_BytsPerSec;
+	// go to first reserved sector
+	unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
+	firstDataSector *= x.BPB_BytsPerSec;
 
-    output = (char *) malloc(size);
+	output = (char *) malloc(size);
 
-    while(trackClust != 0x0FFFFFF8 && trackClust != 0x0FFFFFFF)
-    {
-        currClust = ((trackClust - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-        i = 1;
-        do{
-            fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
-            fread(&dir, sizeof(Directory), 1, fp);
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec);
+		{
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
 
-            tempName[11] = '\0';
-            if(dir.DIR_Name[8] != ' ')
-               dir.DIR_Name[7] = '.';
-            int j = 0;
-            for(j; j < 11; ++j) {
-               if( dir.DIR_Name[j] == 0x20) {
-                  tempName[j] = '\0';
-                  break;
-               }
-               else
-                 tempName[j] = dir.DIR_Name[j];
-            }
+			tempName[11] = '\0';
+			if(y.DIR_Name[8] != ' ')
+			   y.DIR_Name[7] = '.';
+			int j = 0;
+			for(j; j < 11; ++j) {
+			   if( y.DIR_Name[j] == 0x20) {
+				  tempName[j] = '\0';
+				  break;
+			   }
+			   else
+				 tempName[j] = y.DIR_Name[j];
+			}
 
-            // if we found the name and it isn't a directory
-            if(strcmp(tempName, FILENAME) == 0 && dir.DIR_Attr != 0x10 && dir.DIR_FileSize != 0)
-            {
-                trackClust = dir.DIR_FstClusHI * 0x100 + dir.DIR_FstClusLO;
-                fs.clust_num = trackClust;
-                // look through open file list to see if it is already open
-                for (int l = 0; l < statSize; ++l) {
-                    // if we find the file in the open file array, and if the mode allows reading
-                    if (opened[l].clust_num == fs.clust_num && (opened[l].mode == 0 || opened[l].mode == 2)) {
+			// if we found the name and it isn't a directory
+			if(strcmp(tempName, FILENAME) == 0 && y.DIR_Attr != 0x10 && y.DIR_FileSize != 0)
+			{
+				cluster = y.DIR_FstClusHI * 0x100 + y.DIR_FstClusLO;
+				fs.cluster = cluster;
+				// look through open file list to see if it is already open
+				for (int l = 0; l < statSize; ++l) {
+					// if we find the file in the open file array, and if the mode allows reading
+					if (opened[l].cluster == fs.cluster && (opened[l].mode == 0 || opened[l].mode == 2)) {
 
-                        if(off > dir.DIR_FileSize)
-                        {
-                            printf("ERROR: The offset %d exceeds the file size %d\n",off,dir.DIR_FileSize);
-                            return;
-                        }
-                        j = 0;
-                        while(currSize < size)
-                        {
-                            currClust = ((trackClust - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-                            if(j >= startClus)
-                            {
-                                output += currSize;
-                                k = x.BPB_BytsPerSec - startPos;
-                                if(k > size-currSize)
-                                    k = size-currSize;
+						if(off > y.DIR_FileSize)
+						{
+							printf("ERROR: The offset %d exceeds the file size %d\n",off,y.DIR_FileSize);
+							return;
+						}
+						j = 0;
+						while(currSize < size)
+						{
+							current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+							if(j >= firstClus)
+							{
+								output += currSize;
+								k = x.BPB_BytsPerSec - startPos;
+								if(k > size-currSize)
+									k = size-currSize;
 
-                                fseek(fp, currClust + startPos, SEEK_SET);
-                                fread(output, sizeof(char), k, fp);
+								fseek(fat32, current + startPos, SEEK_SET);
+								fread(output, sizeof(char), k, fat32);
 
-                                output -= currSize;
-                                currSize += k;
-                                startPos = 0;
-                            }
-                            fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
-                            fread(&trackClust, sizeof(unsigned int), 1, fp);
-                            ++j;
-                        }
-                        printf("%.*s\n", size, output);
-                        free(output);
-                        free(tempName);
-                        fclose(fp);
-                        return;
-                    }
-                        // else if we do find the file but it does not allow reading
-                    else if (opened[l].clust_num == fs.clust_num && (opened[l].mode != 0 || opened[l].mode != 2)) {
-                        printf("ERROR: The file is not open in read or read/write mode.\n");
-                        free(output);
-                        free(tempName);
-                        fclose(fp);
-                        return;
-                    }
-                }
-                // if we got here, then the file is not open
-                printf("ERROR: The file is not open.\n");
-                free(output);
-                free(tempName);
-                fclose(fp);
-                return;
-            }
-            free(tempName);
-            i += 2;
-        } while((i * sizeof(Directory)) < x.BPB_BytsPerSec);
+								output -= currSize;
+								currSize += k;
+								startPos = 0;
+							}
+							fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+							fread(&cluster, sizeof(unsigned int), 1, fat32);
+							++j;
+						}
+						printf("%.*s\n", size, output);
+						free(output);
+						free(tempName);
+						fclose(fat32);
+						return;
+					}
+						// else if we do find the file but it does not allow reading
+					else if (opened[l].cluster == fs.cluster && (opened[l].mode != 0 || opened[l].mode != 2)) {
+						printf("ERROR: The file is not open in read or read/write mode.\n");
+						free(output);
+						free(tempName);
+						fclose(fat32);
+						return;
+					}
+				}
+				// if we got here, then the file is not open
+				printf("ERROR: The file is not open.\n");
+				free(output);
+				free(tempName);
+				fclose(fat32);
+				return;
+			}
+			free(tempName);
+			i += 2;
+		} 
 
 
-        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
-        fread(&trackClust, sizeof(unsigned int), 1, fp);
-    }
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
+	}
 
-    free(output);
-    fclose(fp);
+	free(output);
+	fclose(fat32);
 }
 
 void writeMyFile(char *FAT32, char *FILENAME, char* OFFSET, char* SIZE, char* STRING)
 {
-    int i = 1, j, k;
-    int off = atoi(OFFSET), size = atoi(SIZE);
-    unsigned int currClust = 0;
-    unsigned int trackClust = cluster_number;
-    unsigned int newClust = 0;
-    unsigned int tempClust = 0;
-    unsigned int zeroo = 0;
-    unsigned int ending = 0x0FFFFFF8;
-    unsigned int dirClust = 0;
-    Directory dir;
-    Status fs;
-    FILE *fp = fopen(FAT32, "rb+");
-    char *input, *zeroes;
-    unsigned int startClus = off / x.BPB_BytsPerSec;
-    unsigned int startPos = off % x.BPB_BytsPerSec;
-    unsigned int currSize = 0;
-    char* tempName = (char*) malloc(12);;
-    int inputStrLen = (int)strlen(STRING);
+	int i = 1, j, k;
+	int off = atoi(OFFSET), size = atoi(SIZE);
+	unsigned int current = 0;
+	unsigned int cluster = cluster_number;
+	unsigned int nClust = 0;
+	unsigned int tempClust = 0;
+	unsigned int zeroo = 0;
+	unsigned int ending = 0x0FFFFFF8;
+	unsigned int dirClust = 0;
+	Directory y;
+	Status fs;
+	FILE *fat32 = fopen(FAT32, "rb+");
+	char *input, *zeroes;
+	unsigned int firstClus = off / x.BPB_BytsPerSec;
+	unsigned int startPos = off % x.BPB_BytsPerSec;
+	unsigned int currSize = 0;
+	char* tempName = (char*) malloc(12);;
+	int inputStrLen = (int)strlen(STRING);
 
-    // go to first reserved sector
-    unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
-    firstDataSector *= x.BPB_BytsPerSec;
+	// go to first reserved sector
+	unsigned int firstDataSector = x.BPB_RsvdSecCnt + (x.BPB_NumFATs * x.BPB_FATSz32);
+	firstDataSector *= x.BPB_BytsPerSec;
 
-    input = (char *) malloc(size);
-    // do this instead of strcopy to not have it nullterminated.
-    memset(input, 0, sizeof(char) * size);
-    for(j = 0; j < strlen(STRING); ++j)
-    {
-        input[j] = STRING[j];
-    }
+	input = (char *) malloc(size);
+	// do this instead of strcopy to not have it nullterminated.
+	memset(input, 0, sizeof(char) * size);
+	for(j = 0; j < strlen(STRING); ++j)
+	{
+		input[j] = STRING[j];
+	}
 
-    zeroes = (char*) malloc(512);
-    memset(zeroes, 0, 512);
-
-
-    while(trackClust != 0x0FFFFFF8 && trackClust != 0x0FFFFFFF)
-    {
-        currClust = ((trackClust - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-        i = 1;
-        do{
-            fseek(fp, currClust + (i * sizeof(Directory)), SEEK_SET);
-            fread(&dir, sizeof(Directory), 1, fp);
-
-            tempName[11] = '\0';
-            if(dir.DIR_Name[8] != ' ')
-               dir.DIR_Name[7] = '.';
-            int j = 0;
-            for(j; j < 11; ++j) {
-               if( dir.DIR_Name[j] == 0x20) {
-                  tempName[j] = '\0';
-                  break;
-               }
-               else
-                 tempName[j] = dir.DIR_Name[j];
-            }
-
-            // if we found the name and it isn't a directory
-            if(strcmp(tempName, FILENAME) == 0 && dir.DIR_Attr != 0x10)
-            {
-                dirClust = currClust + (i*sizeof(Directory));
-                trackClust = ((unsigned int)dir.DIR_FstClusHI) * 0x100 + ((unsigned int)dir.DIR_FstClusLO);
-                fs.clust_num = trackClust;
-                // look through open file list to see if it is already open
-                for (int i = 0; i < statSize; ++i) {
-                    // if we find the file in the open file array, and if the mode allows writing
-                    if (opened[i].clust_num == fs.clust_num && (opened[i].mode == 1 || opened[i].mode == 2)) {
-                        // check that the offset doesn't exceed the file size
-                        /*
-                        if(off > dir.DIR_FileSize)
-                        {
-                            printf("ERROR: The offset %d exceeds the file size %d\n",off,dir.DIR_FileSize);
-                            return;
-                        }*/
+	zeroes = (char*) malloc(512);
+	memset(zeroes, 0, 512);
 
 
-                        j = 0;
+	while(cluster != 0x0FFFFFF8 && cluster != 0x0FFFFFFF)
+	{
+		current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+		i = 1;
+		while((i * 32) < x.BPB_BytsPerSec){
+			fseek(fat32, current + (i * 32), SEEK_SET);
+			fread(&y, 32, 1, fat32);
 
-                        // while the current byte does not exceed the given size to write
-                        while(currSize < size)
-                        {
-                            if(trackClust == 0x0FFFFFFF || trackClust == 0x0FFFFFF8)
-                            {
-                                fclose(fp);
-                                newClust = findEmptyCluster(FAT32);
-                                fp = fopen(FAT32, "rb+");
-                                fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (tempClust * sizeof(int)), SEEK_SET);
-                                fwrite(&newClust, sizeof(int), 1, fp);
-                                
-                                fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (newClust * sizeof(int)), SEEK_SET);
-                                fwrite(&ending, sizeof(int), 1, fp);
-                                trackClust = newClust;
-                            }
+			tempName[11] = '\0';
+			if(y.DIR_Name[8] != ' ')
+			   y.DIR_Name[7] = '.';
+			int j = 0;
+			for(j; j < 11; ++j) {
+			   if( y.DIR_Name[j] == 0x20) {
+				  tempName[j] = '\0';
+				  break;
+			   }
+			   else
+				 tempName[j] = y.DIR_Name[j];
+			}
 
-                            currClust = ((trackClust - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-
-                            if(j >= startClus)
-                            {
-                                input += currSize;
-                                k = x.BPB_BytsPerSec - startPos;
-                                if(k > size-currSize)
-                                {
-                                    k = size-currSize;
-                                    fseek(fp, currClust + startPos, SEEK_SET);
-                                    fwrite(input, sizeof(char), k, fp);
-
-                                    fseek(fp, currClust + startPos + k, SEEK_SET);
-                                    fwrite(zeroes, sizeof(char), 512-k-startPos, fp);
-                                } else {
-
-                                    fseek(fp, currClust + startPos, SEEK_SET);
-                                    fwrite(input, sizeof(char), k, fp);
-                                }
-                                input -= currSize;
-                                currSize += k;
-                                startPos = 0;
-                            }
-
-                            tempClust = trackClust;
-                            fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
-                            fread(&trackClust, sizeof(unsigned int), 1, fp);
-                            ++j;
-                        }
-
-                        // if given size to write is less than the total file's size
-                        if (off + size < dir.DIR_FileSize) {
-                            if(trackClust == 0x0FFFFFFF || trackClust == 0x0FFFFFF8)
-                            {
-                                k = (currSize % 512);
-                                fseek(fp, currClust + k, SEEK_SET);
-                                fwrite(zeroes, sizeof(char), 512 - k, fp);
-                            } else if(trackClust != 0x0FFFFFFF && trackClust != 0x0FFFFFF8)
-                            {
-                                fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (tempClust * sizeof(int)), SEEK_SET);
-                                fwrite(&ending, sizeof(int), 1, fp);
-                            }
-                            while(trackClust != 0x0FFFFFFF && trackClust != 0x0FFFFFF8)
-                            {
-                                currClust = ((trackClust - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
-                                k = (currSize % 512);
-                                fseek(fp, currClust + k, SEEK_SET);
-                                fwrite(zeroes, sizeof(int), 512-k, fp);
-                                currSize = 0;
-                                tempClust = trackClust;
-                                fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
-                                fread(&trackClust, sizeof(int), 1, fp);
-
-                                fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (tempClust * sizeof(int)), SEEK_SET);
-                                fwrite(&zeroo, sizeof(int), 1, fp);
-
-                                if(trackClust == 0x0FFFFFFF || trackClust == 0x0FFFFFF8)
-                                {
-                                    fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
-                                    fwrite(&zeroo, sizeof(int), 1, fp);
-                                }
-                            }
-                            dir.DIR_FileSize = (startClus * x.BPB_BytsPerSec) + (off%x.BPB_BytsPerSec) + size;
-                        } else {
-                            dir.DIR_FileSize = off + size;
-                        }
+			// if we found the name and it isn't a directory
+			if(strcmp(tempName, FILENAME) == 0 && y.DIR_Attr != 0x10)
+			{
+				dirClust = current + (i*32);
+				cluster = ((unsigned int)y.DIR_FstClusHI) * 0x100 + ((unsigned int)y.DIR_FstClusLO);
+				fs.cluster = cluster;
+				// look through open file list to see if it is already open
+				for (int i = 0; i < statSize; ++i) {
+					// if we find the file in the open file array, and if the mode allows writing
+					if (opened[i].cluster == fs.cluster && (opened[i].mode == 1 || opened[i].mode == 2)) {
+						// check that the offset doesn't exceed the file size
+						/*
+						if(off > y.DIR_FileSize)
+						{
+							printf("ERROR: The offset %d exceeds the file size %d\n",off,y.DIR_FileSize);
+							return;
+						}*/
 
 
-                        fseek(fp, dirClust, SEEK_SET);
-                        fwrite(&dir, sizeof(Directory), 1, fp);
+						j = 0;
 
-                        free(input);
-                        free(tempName);
-                        fclose(fp);
-                        return;
-                    }
-                    else if (opened[i].clust_num == fs.clust_num && (opened[i].mode != 1 && opened[i].mode != 2)) {
-                        printf("ERROR: The file is not open in read or read/write mode.\n");
-                        free(input);
-                        free(tempName);
-                        fclose(fp);
-                        return;
-                    }
-                }
-                printf("ERROR: The file is not open.\n");
-            }
-            free(tempName);
-            i += 2;
-        } while((i * sizeof(Directory)) < x.BPB_BytsPerSec);
+						// while the current byte does not exceed the given size to write
+						while(currSize < size)
+						{
+							if(cluster == 0x0FFFFFFF || cluster == 0x0FFFFFF8)
+							{
+								fclose(fat32);
+								nClust = findAvailableCluster(FAT32);
+								fat32 = fopen(FAT32, "rb+");
+								fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (tempClust * sizeof(int)), SEEK_SET);
+								fwrite(&nClust, sizeof(int), 1, fat32);
+								
+								fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (nClust * sizeof(int)), SEEK_SET);
+								fwrite(&ending, sizeof(int), 1, fat32);
+								cluster = nClust;
+							}
+
+							current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+
+							if(j >= firstClus)
+							{
+								input += currSize;
+								k = x.BPB_BytsPerSec - startPos;
+								if(k > size-currSize)
+								{
+									k = size-currSize;
+									fseek(fat32, current + startPos, SEEK_SET);
+									fwrite(input, sizeof(char), k, fat32);
+
+									fseek(fat32, current + startPos + k, SEEK_SET);
+									fwrite(zeroes, sizeof(char), 512-k-startPos, fat32);
+								} else {
+
+									fseek(fat32, current + startPos, SEEK_SET);
+									fwrite(input, sizeof(char), k, fat32);
+								}
+								input -= currSize;
+								currSize += k;
+								startPos = 0;
+							}
+
+							tempClust = cluster;
+							fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+							fread(&cluster, sizeof(unsigned int), 1, fat32);
+							++j;
+						}
+
+						// if given size to write is less than the total file's size
+						if (off + size < y.DIR_FileSize) {
+							if(cluster == 0x0FFFFFFF || cluster == 0x0FFFFFF8)
+							{
+								k = (currSize % 512);
+								fseek(fat32, current + k, SEEK_SET);
+								fwrite(zeroes, sizeof(char), 512 - k, fat32);
+							} else if(cluster != 0x0FFFFFFF && cluster != 0x0FFFFFF8)
+							{
+								fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (tempClust * sizeof(int)), SEEK_SET);
+								fwrite(&ending, sizeof(int), 1, fat32);
+							}
+							while(cluster != 0x0FFFFFFF && cluster != 0x0FFFFFF8)
+							{
+								current = ((cluster - 2) * (x.BPB_SecPerClus * x.BPB_BytsPerSec)) + firstDataSector;
+								k = (currSize % 512);
+								fseek(fat32, current + k, SEEK_SET);
+								fwrite(zeroes, sizeof(int), 512-k, fat32);
+								currSize = 0;
+								tempClust = cluster;
+								fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+								fread(&cluster, sizeof(int), 1, fat32);
+
+								fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (tempClust * sizeof(int)), SEEK_SET);
+								fwrite(&zeroo, sizeof(int), 1, fat32);
+
+								if(cluster == 0x0FFFFFFF || cluster == 0x0FFFFFF8)
+								{
+									fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+									fwrite(&zeroo, sizeof(int), 1, fat32);
+								}
+							}
+							y.DIR_FileSize = (firstClus * x.BPB_BytsPerSec) + (off%x.BPB_BytsPerSec) + size;
+						} else {
+							y.DIR_FileSize = off + size;
+						}
 
 
-        fseek(fp, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (trackClust * sizeof(int)), SEEK_SET);
-        fread(&trackClust, sizeof(unsigned int), 1, fp);
-    }
+						fseek(fat32, dirClust, SEEK_SET);
+						fwrite(&y, 32, 1, fat32);
 
-    free(input);
-    fclose(fp);
+						free(input);
+						free(tempName);
+						fclose(fat32);
+						return;
+					}
+					else if (opened[i].cluster == fs.cluster && (opened[i].mode != 1 && opened[i].mode != 2)) {
+						printf("ERROR: The file is not open in read or read/write mode.\n");
+						free(input);
+						free(tempName);
+						fclose(fat32);
+						return;
+					}
+				}
+				printf("ERROR: The file is not open.\n");
+			}
+			free(tempName);
+			i += 2;
+		} 
+
+
+		fseek(fat32, (x.BPB_RsvdSecCnt * x.BPB_BytsPerSec) + (cluster * sizeof(int)), SEEK_SET);
+		fread(&cluster, sizeof(unsigned int), 1, fat32);
+	}
+
+	free(input);
+	fclose(fat32);
 }
